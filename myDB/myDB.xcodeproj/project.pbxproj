@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB47F49827C638B50018FAD5 /* Compiler and Virtual Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */; };
 		CB6BE8F527C49863002D42CC /* repl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB6BE8F427C49863002D42CC /* repl.cpp */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Compiler and Virtual Machine.cpp"; sourceTree = "<group>"; };
 		CB6BE8F127C49862002D42CC /* myDB */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = myDB; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6BE8F427C49863002D42CC /* repl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = repl.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				CB6BE8F427C49863002D42CC /* repl.cpp */,
+				CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */,
 			);
 			path = myDB;
 			sourceTree = "<group>";
@@ -119,6 +122,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB47F49827C638B50018FAD5 /* Compiler and Virtual Machine.cpp in Sources */,
 				CB6BE8F527C49863002D42CC /* repl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
