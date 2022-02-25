@@ -6,6 +6,9 @@
 //  Copyright © 2022 xiaoyuyu. All rights reserved.
 //
 
+// 本版本只支持三个语句:  1)insert id username email 2)select 3).exit
+// 所有数据全部放在内存，没法持久化到磁盘中
+
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
@@ -53,17 +56,23 @@ public:
     ~Table() {
         for (int i = 0; i < MAX_PAGES; i++)
             if (page[i] != nullptr)
-                delete page[i];
+                operator delete(page[i]);
     }
 };
 
 // struct of a row
 // reflect data of statement, etc.id , username, email
-struct Row {
+class Row {
+public:
     string id;
     string username;
     string email;
 };
+
+ostream& operator<<(ostream& os, Row row) {
+    os << "id:" << row.id << "\t" << "username:" << row.username << "\t" << "email:" << row.email;
+    return os;
+}
 
 #define size_of_attribute(Struct,Attribute) sizeof(((Struct*)0)->Attribute)
 const int ID_SIZE = size_of_attribute(Row, id);
@@ -134,33 +143,34 @@ PrepareResult prepare_statement(string command, Statement& statement) {
     my_stream >> type;
     int idx = 0;
     string temp[3];   // 临时存放id,username,email三个元素
-    if (type == "select") {
+    if (type == "select") { // 目前只支持全部select
         statement.type = STATEMENT_SELECT;
+        return PREPARE_SUCCESS;
     }
     if (type == "insert") {
         statement.type = STATEMENT_INSERT;
-    }
-    while (my_stream) {
-        my_stream >> temp[idx];
-        // cout << temp[idx] << endl;
-        idx++;
-    }
-    // cout << idx << endl;
-    if (idx < 3) {
-        return PREPARE_SYNTAX_ERROR;
-    } else {
-        statement.row->id = temp[0];
-        statement.row->username = temp[1];
-        statement.row->email = temp[2];
-        return PREPARE_SUCCESS;
+        while (my_stream) {
+            my_stream >> temp[idx];
+            // cout << temp[idx] << endl;
+            idx++;
+        }
+        // cout << idx << endl;
+        if (idx < 3) {
+            return PREPARE_SYNTAX_ERROR;
+        } else {
+            statement.row->id = temp[0];
+            statement.row->username = temp[1];
+            statement.row->email = temp[2];
+            return PREPARE_SUCCESS;
+        }
     }
     return PREPARE_UNRECOGNIZED_STATEMENT;
 }
 
 // 求行所在地址
-void* row_slot(Table table) {
+void* row_slot(Table& table, size_t num_rows) {
     // 确定应该插入在第几页
-    int page_num = table.num_rows / ROWS_PER_PAGE;
+    size_t page_num = num_rows / ROWS_PER_PAGE;
     // 判断是否需要创建新的页
     void* page = table.page[page_num];
     if (page == nullptr) {
@@ -168,19 +178,24 @@ void* row_slot(Table table) {
         page = table.page[page_num];
     }
     // 判断应该插入的页内偏移量
-    int row_offset = table.num_rows % ROWS_PER_PAGE;
+    int row_offset = num_rows % ROWS_PER_PAGE;
     int byte_offset = row_offset * ROW_SIZE;
     return (char*)page + byte_offset;
 }
 
 // 序列化 insert
-void serialize_row(Row* source, void* destination) {
-    memcpy((char*)destination + ID_OFFSET, &(source->id), ID_SIZE);
-    memcpy((char*)destination + USERNAME_OFFSET, &(source->username), USERNAME_SIZE);
-    memcpy((char*)destination + EMAIL_OFFSET, &(source->email), EMAIL_SIZE);
+void serialize_row(Row* source, void* memory) {
+    memcpy((char*)memory + ID_OFFSET, &(source->id), ID_SIZE);
+    memcpy((char*)memory + USERNAME_OFFSET, &(source->username), USERNAME_SIZE);
+    memcpy((char*)memory + EMAIL_OFFSET, &(source->email), EMAIL_SIZE);
 }
 
 // 反序列化 select
+void deserialize_row(Row* source, void* memory) {
+    memcpy(&(source->id), (char*)memory + ID_OFFSET, ID_SIZE);
+    memcpy(&(source->username), (char*)memory + USERNAME_OFFSET, USERNAME_SIZE);
+    memcpy(&(source->email), (char*)memory + EMAIL_OFFSET, EMAIL_SIZE);
+}
 
 ExecuteResult execute_insert(Statement& statement, Table& table) {
     // 判断是否还有存储的空间
@@ -188,18 +203,28 @@ ExecuteResult execute_insert(Statement& statement, Table& table) {
         return EXECUTE_TABLE_FULL;
     }
     // 需要获得当前数据应该插入的位置
-    void* destination = row_slot(table);
+    void* destination = row_slot(table,table.num_rows);
+    // cout << destination << endl;
     // 进行序列话，也就是插入数据
     serialize_row(statement.row, destination);
     table.num_rows++;
     return EXECUTE_SUCCESS;
 }
 
-ExecuteResult execute_select(Statement& statement, Table table) {
-    return EXECUTE_TABLE_FULL;
+ExecuteResult execute_select(Statement& statement, Table& table) {
+    Row* row = new Row;
+    for (int i = 0; i < table.num_rows; i++) {
+        void* memory = row_slot(table, i);
+        // cout << memory << endl;
+        deserialize_row(row, memory);
+        cout << *row << endl;
+    }
+    delete row;
+    row = nullptr;
+    return EXECUTE_SUCCESS;
 }
 
-ExecuteResult execute_statement(Statement& statement, Table table) {
+ExecuteResult execute_statement(Statement& statement, Table& table) {
     switch (statement.type) {
         case STATEMENT_SELECT:
             return execute_select(statement, table);
