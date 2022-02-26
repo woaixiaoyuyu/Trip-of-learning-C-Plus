@@ -112,6 +112,19 @@ public:
     Statement() : type(STATEMENT_SELECT) {
         row = new Row;
     }
+    Statement(const Statement& p) {
+        this->type = p.type;
+        this->row = new Row(*(p.row));
+    }
+    Statement& operator=(const Statement& p) {
+        if (this == &p)
+            return *this;
+        delete this->row;
+        this->row = nullptr;
+        this->type = p.type;
+        this->row = new Row(*(p.row));
+        return *this;
+    }
     ~Statement() {
         delete row;
         row = nullptr;
@@ -342,7 +355,7 @@ int main(int argc, const char * argv[]) {
     // 创建用来存放内存中数据的table
     Table table;
     // 将本地文件中的数据导入table
-    db_open(table, "xxxx");
+    db_open(table, "xxx");
     // 创建缓冲区
     myBuffer * buff = newInputBuffer();
     while (true) {
