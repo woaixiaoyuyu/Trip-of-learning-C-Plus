@@ -18,6 +18,7 @@
 #include <sstream>
 #include <fstream>
 #include <cerrno>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -76,9 +77,9 @@ public:
 // reflect data of statement, etc.id , username, email
 class Row {
 public:
-    string id;
-    string username;
-    string email;
+    int id;
+    char username[COLUMN_USERNAME_SIZE];
+    char email[COLUMN_EMAIL_SIZE];
 };
 
 ostream& operator<<(ostream& os, Row row) {
@@ -151,31 +152,21 @@ MetaCommandResult do_meta_command(string command) {
 
 PrepareResult prepare_statement(string command, Statement& statement) {
     // 将对应的数据插入到Statement的结构中
-    istringstream my_stream(command);
-    string type;
-    my_stream >> type;
-    int idx = 0;
-    string temp[3];   // 临时存放id,username,email三个元素
-    if (type == "select") { // 目前只支持全部select
+    if (strncmp(command.c_str(), "select", 6) == 0) { // 目前只支持全部select
         statement.type = STATEMENT_SELECT;
         return PREPARE_SUCCESS;
     }
-    if (type == "insert") {
+    if (strncmp(command.c_str(), "insert", 6) == 0) {
         statement.type = STATEMENT_INSERT;
-        while (my_stream) {
-            my_stream >> temp[idx];
-            // cout << temp[idx] << endl;
-            idx++;
+        int args_assigned = sscanf(&command[0], "insert %d %s %s",
+                                   &(statement.row->id),
+                                   statement.row->username,
+                                   statement.row->email
+        );
+        if (args_assigned < 3) {
+        return PREPARE_SYNTAX_ERROR;
         }
-        // cout << idx << endl;
-        if (idx < 3) {
-            return PREPARE_SYNTAX_ERROR;
-        } else {
-            statement.row->id = temp[0];
-            statement.row->username = temp[1];
-            statement.row->email = temp[2];
-            return PREPARE_SUCCESS;
-        }
+        return PREPARE_SUCCESS;
     }
     return PREPARE_UNRECOGNIZED_STATEMENT;
 }
@@ -204,8 +195,12 @@ void* get_page(Table& table, size_t page_num) {
                 exit(EXIT_FAILURE);
             }
             // 将大小为一页的数据完整的存入内存中的对应的"页内"
-            cout << table.page[page_num] << endl;
+            // cout << table.page[page_num] << endl;
             table.file_descriptor.read((char*)table.page[page_num], PAGE_SIZE);
+            if (table.file_descriptor.eof()) {
+                table.file_descriptor.clear();
+                return table.page[page_num];
+            }
             if (!table.file_descriptor) {
                 cout << "Error reading file: " << strerror(errno) << endl;
                 exit(EXIT_FAILURE);
@@ -231,7 +226,6 @@ void serialize_row(Row* source, void* memory) {
     memcpy((char*)memory + ID_OFFSET, &(source->id), ID_SIZE);
     memcpy((char*)memory + USERNAME_OFFSET, &(source->username), USERNAME_SIZE);
     memcpy((char*)memory + EMAIL_OFFSET, &(source->email), EMAIL_SIZE);
-    cout << (char*)memory << endl;
 }
 
 // 反序列化 select
@@ -248,7 +242,7 @@ ExecuteResult execute_insert(Statement& statement, Table& table) {
     }
     // 需要获得当前数据应该插入的位置
     void* destination = row_slot(table,table.num_rows);
-    cout << destination << endl;
+    // cout << destination << endl;
     // 进行序列话，也就是插入数据
     serialize_row(statement.row, destination);
     table.num_rows++;
@@ -259,7 +253,7 @@ ExecuteResult execute_select(Statement& statement, Table& table) {
     Row* row = new Row;
     for (int i = 0; i < table.num_rows; i++) {
         void* memory = row_slot(table, i);
-        cout << memory << endl;
+        // cout << memory << endl;
         deserialize_row(row, memory);
         cout << *row << endl;
     }
@@ -309,7 +303,7 @@ void pager_flush(Table& db, size_t page_num, size_t size) {
         exit(EXIT_FAILURE);
     }
     
-    cout << (char*)db.page[page_num] << endl;
+    // You need to save the 'payload' CONTENT of the string, not the string object as such (which typically contains just a length and a pointer to the actual content)
     db.file_descriptor.write((char*)db.page[page_num], size);
     
     if (!db.file_descriptor) {
