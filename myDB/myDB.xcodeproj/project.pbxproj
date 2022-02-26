@@ -26,7 +26,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		CB07483627C8D04A007AD527 /* disk.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = disk.txt; sourceTree = "<group>"; };
 		CB45C54527C8AAE100FA2AFA /* Persistence to Disk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Persistence to Disk.cpp"; sourceTree = "<group>"; };
 		CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Compiler and Virtual Machine.cpp"; sourceTree = "<group>"; };
 		CB6BE8F127C49862002D42CC /* myDB */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = myDB; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,7 +67,6 @@
 				CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */,
 				CBCBE7E227C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp */,
 				CB45C54527C8AAE100FA2AFA /* Persistence to Disk.cpp */,
-				CB07483627C8D04A007AD527 /* disk.txt */,
 			);
 			path = myDB;
 			sourceTree = "<group>";

@@ -12,6 +12,11 @@
 // 实现1)数据的加载是很容易的，直接导入数据即可
 // 实现2)，由于目前还不支持delete，是一个append only的数据库，更新文件，总体来说也不难
 
+// 相比于之前版本的修订:
+// 1)用char[] 替换string，因为在设计的过程中，用string往file中写入数据在当前环境下没有char[]方便
+// 2)用return 0替换exit(success)，避免不回溯栈：不调用拥有自动存储期变量的析构函数
+// 3)需要自己在合适的路径下提前创建好空文件
+
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
@@ -155,8 +160,7 @@ PrepareResult prepare_statement(string command, Statement& statement) {
     if (strncmp(command.c_str(), "select", 6) == 0) { // 目前只支持全部select
         statement.type = STATEMENT_SELECT;
         return PREPARE_SUCCESS;
-    }
-    if (strncmp(command.c_str(), "insert", 6) == 0) {
+    } else if (strncmp(command.c_str(), "insert", 6) == 0) {
         statement.type = STATEMENT_INSERT;
         int args_assigned = sscanf(&command[0], "insert %d %s %s",
                                    &(statement.row->id),
@@ -189,7 +193,7 @@ void* get_page(Table& table, size_t page_num) {
             num_pages++;    // 当前文件的page数
         // 防止飞页
         if (page_num <= num_pages) {
-            table.file_descriptor.seekg(page_num * PAGE_SIZE, ios::beg);
+            table.file_descriptor.seekp(page_num * PAGE_SIZE, ios::beg);
             if (!table.file_descriptor) {
                 cout << "Error seeking file" << endl;
                 exit(EXIT_FAILURE);
@@ -279,11 +283,11 @@ ExecuteResult execute_statement(Statement& statement, Table& table) {
 // initializing a table data structure
 // 打开本地文件，将table绑定到对应的文件上
 void db_open(Table& db, string path) {
-    db.file_descriptor.open(path, ios::in | ios::out | ios::app);
+    db.file_descriptor.open(path, ios::in | ios::out);
     if (db.file_descriptor) {
-        db.file_descriptor.seekg(0,ios_base::end);
+        db.file_descriptor.seekp(0,ios_base::end);
         db.file_length = db.file_descriptor.tellg();
-        db.file_descriptor.seekg(0,ios_base::beg);
+        db.file_descriptor.seekp(0,ios_base::beg);
         db.num_rows = db.file_length / ROW_SIZE;
     } else {
         cout << "open database error." << endl;
@@ -297,7 +301,7 @@ void pager_flush(Table& db, size_t page_num, size_t size) {
         exit(EXIT_FAILURE);
     }
     
-    db.file_descriptor.seekg(page_num * PAGE_SIZE, ios::beg);
+    db.file_descriptor.seekp(page_num * PAGE_SIZE, ios::beg);
     if (!db.file_descriptor) {
         cout << "Error seeking" << endl;
         exit(EXIT_FAILURE);
@@ -338,7 +342,7 @@ int main(int argc, const char * argv[]) {
     // 创建用来存放内存中数据的table
     Table table;
     // 将本地文件中的数据导入table
-    db_open(table, "/Users/louwen/Desktop/华为2012/code/Trip-of-learning-C-Plus/myDB/myDB/disk.txt");
+    db_open(table, "xxxx");
     // 创建缓冲区
     myBuffer * buff = newInputBuffer();
     while (true) {
@@ -354,7 +358,7 @@ int main(int argc, const char * argv[]) {
                 // 退出
                 closeBuffer(buff);
                 db_close(table);
-                exit(EXIT_SUCCESS);
+                return 0;;
             }
             switch (do_meta_command(command)) {
                 case META_COMMAND_SUCCESS :
