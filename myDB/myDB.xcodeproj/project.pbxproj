@@ -10,6 +10,7 @@
 		CB45C54627C8AAE100FA2AFA /* Persistence to Disk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB45C54527C8AAE100FA2AFA /* Persistence to Disk.cpp */; };
 		CB47F49827C638B50018FAD5 /* Compiler and Virtual Machine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */; };
 		CB6BE8F527C49863002D42CC /* repl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB6BE8F427C49863002D42CC /* repl.cpp */; };
+		CBA0A69A27CB263D00C08C3E /* The Cursor Abstraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBA0A69927CB263D00C08C3E /* The Cursor Abstraction.cpp */; };
 		CBCBE7E327C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBCBE7E227C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "Compiler and Virtual Machine.cpp"; sourceTree = "<group>"; };
 		CB6BE8F127C49862002D42CC /* myDB */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = myDB; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB6BE8F427C49863002D42CC /* repl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = repl.cpp; sourceTree = "<group>"; };
+		CBA0A69927CB263D00C08C3E /* The Cursor Abstraction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "The Cursor Abstraction.cpp"; sourceTree = "<group>"; };
 		CBCBE7E227C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "An In-Memory, Append-Only, Single-Table Database.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +69,7 @@
 				CB47F49727C638B50018FAD5 /* Compiler and Virtual Machine.cpp */,
 				CBCBE7E227C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp */,
 				CB45C54527C8AAE100FA2AFA /* Persistence to Disk.cpp */,
+				CBA0A69927CB263D00C08C3E /* The Cursor Abstraction.cpp */,
 			);
 			path = myDB;
 			sourceTree = "<group>";
@@ -128,6 +131,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBA0A69A27CB263D00C08C3E /* The Cursor Abstraction.cpp in Sources */,
 				CB47F49827C638B50018FAD5 /* Compiler and Virtual Machine.cpp in Sources */,
 				CBCBE7E327C72F24000B5343 /* An In-Memory, Append-Only, Single-Table Database.cpp in Sources */,
 				CB6BE8F527C49863002D42CC /* repl.cpp in Sources */,
