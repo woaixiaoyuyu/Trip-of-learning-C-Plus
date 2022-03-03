@@ -23,10 +23,12 @@ public:
     value_type _value;
     my_forward_iterator* _right; // 指向下一个iterator
 public:
-    my_forward_iterator(size_t idx = 0, value_type value = 0, my_forward_iterator* right = nullptr) : _idx(idx), _value(value), _right(right) {};
+    my_forward_iterator(value_type value = value_type(), size_t idx = 0, my_forward_iterator* right = nullptr) : _idx(idx), _value(value), _right(right) {};
     my_forward_iterator(const my_forward_iterator& p) {
-        delete this->_right;
-        this->_right = nullptr;
+        if (this->_right != nullptr) {
+            delete this->_right;
+            this->_right = nullptr;
+        }
         this->_idx = p._idx;
         this->_value = p._value;
         this->_right = p._right;

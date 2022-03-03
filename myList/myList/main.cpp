@@ -44,6 +44,8 @@ void test_forward() {
     lst.push_back(3);
     cout << "empty or not: " << lst.empty() << endl;
     cout << "size is: " << lst.size() << endl;
+    auto it = lst.get(0);
+    cout << "lst 第一个元素是: " << *it << endl;
 }
 
 int main(int argc, const char * argv[]) {

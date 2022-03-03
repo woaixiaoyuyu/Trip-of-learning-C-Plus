@@ -145,14 +145,14 @@ bool my_forward_list<T>::empty() {
 
 template <typename T>
 void my_forward_list<T>::push_back(const_iterator& p) {
-    iterator temp = iterator(p);
-    if (this->size() == 0) {
-        _first = &temp;
+    iterator* temp = new iterator(p);
+    if (this->empty()) {
+        _first = temp;
         _first->_idx = 0;
         _last = _first;
     } else {
         size_t idx = _last->_idx;
-        _last->_right = &temp;
+        _last->_right = temp;
         _last = _last->_right;
         _last->_idx = ++idx;
     }
