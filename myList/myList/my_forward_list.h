@@ -72,11 +72,11 @@ public:
         this->_last = p._last;
         return *this;
     }
-    iterator& prev(int idx);
-    iterator& next(int idx);
+    iterator& prev(size_t idx);
+    iterator& next(size_t idx);
     const_iterator& begin();
     const_iterator& end();
-    const_iterator& get(int idx);
+    const_iterator& get(size_t idx);
     size_t size();
     bool empty();
     void push_back(const_iterator& p);
@@ -94,7 +94,7 @@ typename my_forward_list<T>::const_iterator& my_forward_list<T>::end() {
 }
 
 template <typename T>
-typename my_forward_list<T>::const_iterator& my_forward_list<T>::get(int idx) {
+typename my_forward_list<T>::const_iterator& my_forward_list<T>::get(size_t idx) {
     // 比较iterator中的下标_idx;
     iterator* temp = _first;
     while (temp->_idx != idx) {
@@ -104,7 +104,7 @@ typename my_forward_list<T>::const_iterator& my_forward_list<T>::get(int idx) {
 }
 
 template <typename T>
-typename my_forward_list<T>::iterator& my_forward_list<T>::prev(int idx) {
+typename my_forward_list<T>::iterator& my_forward_list<T>::prev(size_t idx) {
     // 从first开始遍历，遍历到需要迭代器的前一个迭代器
     iterator* temp = _first;
     while (temp->_right->_idx != idx) {
@@ -114,7 +114,7 @@ typename my_forward_list<T>::iterator& my_forward_list<T>::prev(int idx) {
 }
 
 template <typename T>
-typename my_forward_list<T>::iterator& my_forward_list<T>::next(int idx) {
+typename my_forward_list<T>::iterator& my_forward_list<T>::next(size_t idx) {
     iterator* temp = _first;
     while (temp->_idx != idx) {
         temp = temp->_right;
@@ -165,9 +165,9 @@ void my_forward_list<T>::pop_back() {
         exit(EXIT_FAILURE);
     }
     size_t idx = _last->_idx;
-    iterator* temp = prev(idx);
-    delete _last->_right;
-    _last->_right = nullptr;
+    iterator* temp = &prev(idx);
+    delete _last;
+    _last = nullptr;
     temp->_right = nullptr;
     _last = temp;
 }

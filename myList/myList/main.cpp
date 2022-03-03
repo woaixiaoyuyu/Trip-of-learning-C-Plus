@@ -42,10 +42,15 @@ void test_forward() {
     cout << "empty or not: " << lst.empty() << endl;
     cout << "size is: " << lst.size() << endl;
     lst.push_back(3);
+    lst.push_back(11);
     cout << "empty or not: " << lst.empty() << endl;
     cout << "size is: " << lst.size() << endl;
-    auto it = lst.get(0);
-    cout << "lst 第一个元素是: " << *it << endl;
+    auto it = lst.begin();
+    auto it1 = lst.get(1);
+    cout << "lst 第0个元素是: " << *it << endl;
+    cout << "lst 第1个元素是: " << *it1 << endl;
+    lst.pop_back();
+    cout << "size is: " << lst.size() << endl;
 }
 
 int main(int argc, const char * argv[]) {

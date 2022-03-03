@@ -25,13 +25,20 @@ public:
 public:
     my_forward_iterator(value_type value = value_type(), size_t idx = 0, my_forward_iterator* right = nullptr) : _idx(idx), _value(value), _right(right) {};
     my_forward_iterator(const my_forward_iterator& p) {
-        if (this->_right != nullptr) {
-            delete this->_right;
-            this->_right = nullptr;
+        this->_idx = p._idx;
+        this->_value = p._value;
+        if (p._right != nullptr)
+            this->_right = new my_forward_iterator(*(p._right));
+        else _right = nullptr;
+    }
+    my_forward_iterator& operator=(const my_forward_iterator& p) {
+        if (this == &p) {
+            return *this;
         }
         this->_idx = p._idx;
         this->_value = p._value;
         this->_right = p._right;
+        return *this;
     }
 //    my_forward_iterator& operator=(const my_forward_iterator& p) {
 //        if (this != &p) {
@@ -44,10 +51,10 @@ public:
 //        return *this;
 //    }
     ~my_forward_iterator() {
-        if (_right != nullptr) {
-            delete _right;
-            _right = nullptr;
-        }
+//        if (_right != nullptr) {
+//            delete _right;
+//            _right = nullptr;
+//        }
     }
     my_forward_iterator& operator++(void);
     my_forward_iterator operator++(int);
