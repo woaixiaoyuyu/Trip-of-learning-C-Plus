@@ -35,9 +35,20 @@
 
 #include <iostream>
 #include "my_forward_list.h"
+using namespace std;
+
+void test_forward() {
+    my_forward_list<int> lst;
+    cout << "empty or not: " << lst.empty() << endl;
+    cout << "size is: " << lst.size() << endl;
+    lst.push_back(3);
+    cout << "empty or not: " << lst.empty() << endl;
+    cout << "size is: " << lst.size() << endl;
+}
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    cout << "Hello, World!\n";
+    test_forward();
     return 0;
 }

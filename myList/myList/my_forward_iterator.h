@@ -42,8 +42,10 @@ public:
 //        return *this;
 //    }
     ~my_forward_iterator() {
-        delete _right;
-        _right = nullptr;
+        if (_right != nullptr) {
+            delete _right;
+            _right = nullptr;
+        }
     }
     my_forward_iterator& operator++(void);
     my_forward_iterator operator++(int);

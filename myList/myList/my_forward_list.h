@@ -26,27 +26,40 @@ class my_forward_list {
 public:
     using value_type = T;
     using iterator = my_forward_iterator<value_type>;
-    using const_iterator = my_forward_iterator<value_type>;
+    using const_iterator = const my_forward_iterator<value_type>;
 private:
     iterator* _first; // 指向iterator所在链表的第一个iterator
     iterator* _last; // 指向iterator所在链表的最后一个iterator
 public:
-    my_forward_list(iterator* first = nullptr) : _first(*first), _last(nullptr) {
+    my_forward_list(iterator* first = nullptr) : _first(first), _last(nullptr) {
         _last = _first; // 初始化时，指向同一个iterator
     }
     ~my_forward_list() {
+        while (_first != _last) {
+            iterator* temp = _first;
+            _first = _first->_right;
+            delete temp;
+            temp = nullptr;
+        }
         delete _first;
-        delete _last;
         _first = nullptr;
-        _last = nullptr;
     }
     my_forward_list(const my_forward_list& p) {
         delete _first;
         delete _last;
         _first = nullptr;
         _last = nullptr;
-        this->_first = p._first;
-        this->_last = p._last;
+        iterator* first = p._first;
+        iterator* last = p._last;
+        _first = &iterator(first->_idx,first->_value,nullptr);
+        iterator* temp = _first;
+        while (first != last) {
+            first = first->_right;
+            temp->_right = &iterator(first->_idx,first->_value,nullptr);
+            temp = temp->_right;
+        }
+        _last = &iterator(first->_idx,first->_value,nullptr);
+        temp->_right = _last;
     }
     my_forward_list& operator=(const my_forward_list& p) {
         if (this == &p) {
@@ -66,7 +79,7 @@ public:
     const_iterator& get(int idx);
     size_t size();
     bool empty();
-    void push_back(const iterator& p);
+    void push_back(const_iterator& p);
     void pop_back();
 };
 
@@ -114,11 +127,13 @@ size_t my_forward_list<T>::size() {
     iterator* first = _first;
     iterator* last = _last;
     size_t cnt = 0;
-    while (first->_idx != last->_idx) {
+    if (first == nullptr)
+        return cnt;
+    while (first != last) {
         first = first->_right;
         cnt++;
     }
-    return cnt;
+    return ++cnt;
 }
 
 template <typename T>
@@ -129,15 +144,26 @@ bool my_forward_list<T>::empty() {
 }
 
 template <typename T>
-void my_forward_list<T>::push_back(const iterator& p) {
-    size_t idx = _last->_idx;
-    _last->_right = p;
-    _last = _last->_right;
-    _last->_idx = idx;
+void my_forward_list<T>::push_back(const_iterator& p) {
+    iterator temp = iterator(p);
+    if (this->size() == 0) {
+        _first = &temp;
+        _first->_idx = 0;
+        _last = _first;
+    } else {
+        size_t idx = _last->_idx;
+        _last->_right = &temp;
+        _last = _last->_right;
+        _last->_idx = ++idx;
+    }
 }
 
 template <typename T>
 void my_forward_list<T>::pop_back() {
+    if (this->empty()) {
+        std::cout << "empty list can't use pop." << std::endl;
+        exit(EXIT_FAILURE);
+    }
     size_t idx = _last->_idx;
     iterator* temp = prev(idx);
     delete _last->_right;
