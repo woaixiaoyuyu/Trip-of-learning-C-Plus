@@ -27,7 +27,6 @@ public:
     using value_type = T;
     using iterator = my_forward_iterator<value_type>;
     using const_iterator = const my_forward_iterator<value_type>;
-private:
     iterator* _first; // 指向iterator所在链表的第一个iterator
     iterator* _last; // 指向iterator所在链表的最后一个iterator
 public:
@@ -76,7 +75,7 @@ public:
     iterator& next(size_t idx);
     const_iterator& begin();
     const_iterator& end();
-    const_iterator& get(size_t idx);
+    iterator& get(size_t idx);
     size_t size();
     bool empty();
     void push_back(const_iterator& p);
@@ -94,7 +93,7 @@ typename my_forward_list<T>::const_iterator& my_forward_list<T>::end() {
 }
 
 template <typename T>
-typename my_forward_list<T>::const_iterator& my_forward_list<T>::get(size_t idx) {
+typename my_forward_list<T>::iterator& my_forward_list<T>::get(size_t idx) {
     // 比较iterator中的下标_idx;
     iterator* temp = _first;
     while (temp->_idx != idx) {

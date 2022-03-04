@@ -34,7 +34,7 @@
 // 4) operator->() -- 和operator*()对应
 
 #include <iostream>
-#include "my_forward_list.h"
+#include "method.cpp"
 using namespace std;
 
 void test_forward() {
@@ -49,7 +49,12 @@ void test_forward() {
     auto it1 = lst.get(1);
     cout << "lst 第0个元素是: " << *it << endl;
     cout << "lst 第1个元素是: " << *it1 << endl;
+    insert(100, 1, lst);
+    insert(200, 0, lst);
     lst.pop_back();
+    cout << "size is: " << lst.size() << endl;
+    remove(2,lst);
+    remove(0,lst);
     cout << "size is: " << lst.size() << endl;
 }
 
