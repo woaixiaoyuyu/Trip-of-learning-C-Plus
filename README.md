@@ -28,3 +28,7 @@ A collection of some projects during learning c++.
 最后只实现了单链表的结构，但是收获还是很大的，一层一层抽丝剥茧一般的设计，经历过了才有收获嘛。
 
 灵感来自于书籍：深入应用c++11的1.4中的自定义的range方法，看了你就知道为什么了，培养自己的设计思路。
+
+## myBTree
+
+学习了B Tree的原理之后，想学习一下别人的代码，删除就不学了，看一下插入和搜寻就不错了，仓库历史programiz和geekforgeek的代码，geek的代码比较好，目前还在消化中。
