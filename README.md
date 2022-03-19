@@ -31,4 +31,4 @@ A collection of some projects during learning c++.
 
 ## myBTree
 
-学习了B Tree的原理之后，想学习一下别人的代码，删除就不学了，看一下插入和搜寻就不错了，仓库历史programiz和geekforgeek的代码，geek的代码比较好，目前还在消化中。
+学习了B Tree的原理之后，想学习一下别人的代码，删除就不学了，看一下插入和搜寻就不错了，仓库里是programiz和geekforgeek的代码，geek的代码比较好，目前还在消化中。
