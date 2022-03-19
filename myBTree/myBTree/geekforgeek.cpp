@@ -18,7 +18,7 @@ class BTreeNode
 {
     int* keys; // An array of keys
     int t;     // Minimum degree (defines the range for number of keys) 定义了阶数
-    BTreeNode** C; // An array of child pointers
+    BTreeNode** C; // An array of child pointers，可以理解为一个数组，数组的每个元素都是BTreeNode*
     int n;     // Current number of keys
     bool leaf; // Is true when node is leaf. Otherwise false
 public:
@@ -144,9 +144,11 @@ void BTree::insert(int k)
             BTreeNode *s = new BTreeNode(t, false);
 
             // Make old root as child of new root
+            // 让旧的根节点成为新的根节点的孩子节点
             s->C[0] = root;
 
             // Split the old root and move 1 key to the new root
+            // 当root已经满的时候会执行，第一个参数是root在new root的孩子节点中的下标
             s->splitChild(0, root);
 
             // New root has two children now. Decide which of the
