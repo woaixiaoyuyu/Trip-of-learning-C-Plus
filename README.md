@@ -34,3 +34,9 @@ A collection of some projects during learning c++.
 学习了B Tree的原理之后，想学习一下别人的代码，删除就不学了，看一下插入和搜寻就不错了，仓库里是programiz和geekforgeek的代码，geek的代码比较好，自己消化了一下。
 
 本B Tree只有遍历，查询和插入功能，最难的删除功能没有实现。
+
+## myTTT(Tic-Tac-Toe)
+
+想做个双人对战的井字游戏，至于原因是因为想学习一下简单的网络编程，用一个双人交互小游戏入手，是个不错的选择。
+
+如果顺利的话，会扩展成五子棋哦～
