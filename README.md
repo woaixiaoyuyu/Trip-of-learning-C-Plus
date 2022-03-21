@@ -37,8 +37,9 @@ A collection of some projects during learning c++.
 
 ## myTTT(Tic-Tac-Toe)
 
-想做个双人对战的井字游戏，至于原因是因为想学习一下简单的网络编程，用一个双人交互小游戏入手，是个不错的选择。
+想做个双人对战的井字游戏，至于原因是因为想学习一下简单的网络编程，用一个双人交互小游戏入手，是个不错的选择。本项目只能在mac/linux上运行。
 
 如果顺利的话，会扩展成五子棋哦～
 
 - xxx_text.cpp/xxx_echo.cpp 是网络编程的基础测试/回声测试
+- mp_server_echo.cpp 是多进程的服务器，客户端还是用xxx_echo.cpp就可以了

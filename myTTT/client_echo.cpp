@@ -54,8 +54,9 @@ int main(int argc, char* argv[]) {
         std::cin.getline(message, BUF_SIZE);
         // std::cout << strlen(message) << std::endl;
         
-        if (!strcmp(message, "Q"))
+        if (!strcmp(message, "Q")) {
             break;
+        }
         
         str_len = write(sock, message, strlen(message));  // 发送
         recv_len = 0;
