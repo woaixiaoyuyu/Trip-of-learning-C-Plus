@@ -40,3 +40,5 @@ A collection of some projects during learning c++.
 想做个双人对战的井字游戏，至于原因是因为想学习一下简单的网络编程，用一个双人交互小游戏入手，是个不错的选择。
 
 如果顺利的话，会扩展成五子棋哦～
+
+- xxx_text.cpp/xxx_echo.cpp 是网络编程的基础测试/回声测试

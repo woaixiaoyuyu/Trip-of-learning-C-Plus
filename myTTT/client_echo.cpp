@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
     int sock;
     struct sockaddr_in serv_addr;
     char message[BUF_SIZE];
-    ssize_t str_len;
+    ssize_t str_len, recv_len, recv_cnt;
     
     if (argc != 3) {
         printf("Usage : %s <IP> <port>\n", argv[0]);
@@ -57,12 +57,16 @@ int main(int argc, char* argv[]) {
         if (!strcmp(message, "Q"))
             break;
         
-        write(sock, message, strlen(message));  // 发送
-        str_len = read(sock, message, BUF_SIZE - 1);    // 读取
-        // std::cout << str_len << std::endl;
-        // std::cout << message << std::endl;
-        if (str_len == -1) {
-            error_handling("read error");
+        str_len = write(sock, message, strlen(message));  // 发送
+        recv_len = 0;
+        while (recv_len < str_len) {
+            recv_cnt = read(sock, &message[recv_len], BUF_SIZE - 1);    // 读取
+            // std::cout << str_len << std::endl;
+            // std::cout << message << std::endl;
+            if (recv_cnt == -1) {
+                error_handling("read error");
+            }
+            recv_len += recv_cnt;
         }
         message[str_len] = 0;
         printf("Message from server : %s\n", message);
