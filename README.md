@@ -41,5 +41,12 @@ A collection of some projects during learning c++.
 
 如果顺利的话，会扩展成五子棋哦～
 
+练手文件：
+
 - xxx_text.cpp/xxx_echo.cpp 是网络编程的基础测试/回声测试
 - mp_server_echo.cpp 是多进程的服务器，客户端还是用xxx_echo.cpp就可以了
+- select_server_echo.cpp 是select结构的回声服务器
+
+游戏文件：
+
+- 加工ing
