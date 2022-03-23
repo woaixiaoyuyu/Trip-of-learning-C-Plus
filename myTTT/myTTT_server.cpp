@@ -52,7 +52,7 @@ void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct tim
     char message[BUF_SIZE];
     while (true) {
         if ((fd_num = select(fd_max + 1, &cpy_reads, 0, 0, NULL)) == -1) {
-            // printf("fd_num is : %d\n", fd_num);
+            printf("fd_num is : %d\n", fd_num);
             break;
         }
         if (fd_num == 0)
@@ -115,6 +115,9 @@ int main(int argc, const char * argv[]) {
             printf("A new player has connected.\n");
             clnt_queue.emplace_back(clnt_sock); // 加入等待队列
             gaming_queue.emplace_back(clnt_sock);   // 父进程也准备一份客户端套接字，在父进程中销毁，防止僵尸进程
+            // int clnt_a = clnt_queue.front();
+            // char str[] = "hello";
+            // write(clnt_a, str, sizeof(str));
         }
         
         if (players_number >=2) {
@@ -128,8 +131,12 @@ int main(int argc, const char * argv[]) {
             }
         }
         
+        printf("id : %d\n", getpid());
+        
         // 子进程运行区域
         if (pid == 0 && playing_number == 2) {
+            printf("parent id : %d\n", getppid());
+            printf("child id : %d\n", getpid());
             close(serv_sock);   // 把从父进程复制的serv socket关闭
             
             // 对每个子进程采取I/O复用select
@@ -159,8 +166,9 @@ int main(int argc, const char * argv[]) {
             
             cpy_reads = reads;
             
-            // printf("the clnt in queue is : %d\n", clnt_a);
-            // printf("the clnt in queue is : %d\n", clnt_b);
+            printf("the clnt in queue is : %d\n", clnt_a);
+            printf("the clnt in queue is : %d\n", clnt_b);
+            printf("queue size : %d\n", clnt_queue.size());
             
             // 激活服务端的棋盘，客户端会自己激活本地的棋盘，服务端的棋盘没必要展示
             char chess_board[width][width];
