@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
         recv_len = read(sock, &message, BUF_SIZE - 1);
         if (recv_len > 0)
             printf("%s\n", message);
-        sleep(1);
+        sleep(3);
     }
     
     close(sock);

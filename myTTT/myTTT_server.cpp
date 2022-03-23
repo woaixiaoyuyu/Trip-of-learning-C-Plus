@@ -44,14 +44,17 @@ void error_handling(std::string message) {
 
 // one turn 一名玩家的一次交互
 void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag) {
+    printf("one turn id is : %d\n", clnt_sock);
     write(clnt_sock, str, sizeof(str));
     // 等待clnt_a的选择
     int fd_num;
     ssize_t str_len;
     char message[BUF_SIZE];
     while (true) {
-        if ((fd_num = select(fd_max + 1, &cpy_reads, 0, 0, NULL)) == -1)
+        if ((fd_num = select(fd_max + 1, &cpy_reads, 0, 0, NULL)) == -1) {
+            // printf("fd_num is : %d\n", fd_num);
             break;
+        }
         if (fd_num == 0)
             continue;
         if (FD_ISSET(clnt_sock, &cpy_reads)) {
@@ -66,6 +69,7 @@ void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct tim
                 break;
             }
         }
+        sleep(3);
     }
 }
 
@@ -106,6 +110,7 @@ int main(int argc, const char * argv[]) {
         if (clnt_sock == -1) {
             continue;
         } else {
+            printf("the clnt in parent is : %d\n", clnt_sock);
             players_number++;
             printf("A new player has connected.\n");
             clnt_queue.emplace_back(clnt_sock); // 加入等待队列
@@ -149,8 +154,13 @@ int main(int argc, const char * argv[]) {
             FD_SET(clnt_b, &reads);
             clnt_queue.pop_front();
             
+            char str[] = "hello";
+            write(clnt_a, str, sizeof(str));
             
             cpy_reads = reads;
+            
+            // printf("the clnt in queue is : %d\n", clnt_a);
+            // printf("the clnt in queue is : %d\n", clnt_b);
             
             // 激活服务端的棋盘，客户端会自己激活本地的棋盘，服务端的棋盘没必要展示
             char chess_board[width][width];
@@ -159,12 +169,14 @@ int main(int argc, const char * argv[]) {
             // 与客户端开始交互
             bool flag = true;   // true 和clnt_a互动，反之则是clnt_b
             char str2[] = "now it's your turn.";
+            printf("fd_max is : %d\n", fd_max);
             while (true) {
                 if (flag) {
                     one_turn(fd_max, clnt_a, cpy_reads, str2, timeout, flag);
                 } else {
                     one_turn(fd_max, clnt_b, cpy_reads, str2, timeout, flag);
                 }
+                sleep(3);
             }
             
             close(clnt_a);
@@ -180,6 +192,7 @@ int main(int argc, const char * argv[]) {
             close(clnt_a);
             close(clnt_b);
         }
+        sleep(3);
     }
     
     close(serv_sock);
