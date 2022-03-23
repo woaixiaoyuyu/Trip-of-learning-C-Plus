@@ -49,4 +49,4 @@ A collection of some projects during learning c++.
 
 游戏文件：
 
-- 加工ing
+- myTTT系列，目前是个bug，谨慎运行
