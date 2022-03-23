@@ -87,6 +87,10 @@ int main(int argc, const char * argv[]) {
     
     memset(&serv_addr, 0, sizeof(serv_addr));
     
+    //设置端口复用
+    int opt = 1;
+    setsockopt(serv_sock, SOL_SOCKET, SO_REUSEPORT, (void*)&opt, sizeof(opt));
+    
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     serv_addr.sin_port = htons(atoi(argv[1]));
