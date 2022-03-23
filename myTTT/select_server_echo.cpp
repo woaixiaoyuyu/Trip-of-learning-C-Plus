@@ -96,13 +96,13 @@ int main(int argc, char* argv[]) {
                         fd_max = clnt_scok;
                 } else {
                     // read message
-                    str_len = read(clnt_scok, message, BUF_SIZE);
+                    str_len = read(i, message, BUF_SIZE);
                     if (str_len == 0) {
                         FD_CLR(i, &reads);
                         close(i);
                         printf("closed client: %d\n", i);
                     } else {
-                        write(clnt_scok, message, str_len);
+                        write(i, message, str_len);
                     }
                 }
             }
