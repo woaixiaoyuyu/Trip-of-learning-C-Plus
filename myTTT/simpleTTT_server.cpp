@@ -136,9 +136,11 @@ int main(int argc, const char * argv[]) {
              
             // 对每个子进程采取I/O复用select
             struct timeval timeout;
-            fd_set reads, cpy_reads;
+            fd_set reads, a_reads, b_reads;
             int fd_max = serv_sock;
             FD_ZERO(&reads);
+            FD_ZERO(&a_reads);
+            FD_ZERO(&b_reads);
             FD_SET(serv_sock, &reads);
             timeout.tv_sec = 5;
             timeout.tv_usec = 5000;
@@ -147,16 +149,16 @@ int main(int argc, const char * argv[]) {
             int clnt_a = clnt_queue.front();
             if (clnt_a > fd_max)
                 fd_max = clnt_a;
+            FD_SET(clnt_a, &a_reads);
             FD_SET(clnt_a, &reads);
             clnt_queue.pop_front();
             
             int clnt_b = clnt_queue.front();
             if (clnt_b > fd_max)
                 fd_max = clnt_b;
+            FD_SET(clnt_b, &b_reads);
             FD_SET(clnt_b, &reads);
             clnt_queue.pop_front();
-             
-            cpy_reads = reads;
              
             // 激活服务端的棋盘，客户端会自己激活本地的棋盘，服务端的棋盘没必要展示
             char chess_board[width][width];
@@ -167,13 +169,13 @@ int main(int argc, const char * argv[]) {
             char str2[] = "now it's your turn.";
             while (true) {
                 if (flag) {
-                    one_turn(fd_max, clnt_a, cpy_reads, str2, 30,timeout, flag, first, chess_board);
+                    one_turn(fd_max, clnt_a, a_reads, str2, 30,timeout, flag, first, chess_board);
+                    // 刷新客户端的棋盘
+                    write(clnt_a, chess_board, 9);
                 } else {
-                    one_turn(fd_max, clnt_b, cpy_reads, str2, 30,timeout, flag, second, chess_board);
+                    one_turn(fd_max, clnt_b, b_reads, str2, 30,timeout, flag, second, chess_board);
+                    write(clnt_a, chess_board, 9);
                 }
-                // 刷新客户端的棋盘
-                write(clnt_a, chess_board, 9);
-                write(clnt_a, chess_board, 10);
                 // 判断输赢
                 
                 sleep(2);
