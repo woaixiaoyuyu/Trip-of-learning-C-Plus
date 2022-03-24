@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
             break;
         
         if (strcmp(message, "now it's your turn.") == 0) {
+            memset(message, 0, BUF_SIZE);
             while (true) {
                 printf("input the x and y of your choice(etc. 0 2) : ");
                 scanf("%d %d", &x,&y);
@@ -104,10 +105,12 @@ int main(int argc, char* argv[]) {
             memcpy(chess_board, message ,9);
             show_chess_board(chess_board);
             printf("wait another player...\n");
+            printf("+++++++++++++++++++++\n");
+            memset(message, 0, BUF_SIZE);
         }
-        sleep(2);
+        sleep(1);
     }
-    
+    sleep(1);
     close(sock);
     return 0;
 }

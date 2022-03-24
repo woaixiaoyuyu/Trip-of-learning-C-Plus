@@ -75,13 +75,15 @@ int* one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct tim
                 break;
             }
         }
-        sleep(2);
+        sleep(1);
     }
     return cur_idx;
 }
 
 // 判断胜负
 bool judge(int* cur_idx, char chess_board[][3]) {
+    if (cur_idx[0] < 0 || cur_idx[1] < 0)
+        return false;
     int x = cur_idx[0];
     int y = cur_idx[1];
     char temp = chess_board[x][y];
@@ -153,7 +155,7 @@ int main(int argc, const char * argv[]) {
         error_handling("bind error");
     }
     
-    if (listen(serv_sock, 2) == -1) {
+    if (listen(serv_sock, 4) == -1) {
         error_handling("listen error");
     }
     
@@ -181,8 +183,6 @@ int main(int argc, const char * argv[]) {
             // 人数大于2即可开始游戏
             players_number -= 2;
             playing_number = 2;
-            
-            close(serv_sock);   // 把从父进程复制的serv socket关闭
              
             // 对每个子进程采取I/O复用select
             struct timeval timeout;
@@ -219,16 +219,8 @@ int main(int argc, const char * argv[]) {
             char str2[] = "now it's your turn.";
             char win[] = "you win";
             char lose[] = "you lose";
-            int* cur_idx;   // int cur_idx[2];
+            int* cur_idx = new int[2]{-1,-1};
             while (true) {
-                if (flag) {
-                    cur_idx = one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
-                } else {
-                    cur_idx = one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
-                }
-                // 刷新客户端的棋盘
-                write(clnt_a, chess_board, 9);
-                write(clnt_b, chess_board, 9);
                 // 判断输赢
                 if (judge(cur_idx, chess_board)) {
                     if (chess_board[cur_idx[0]][cur_idx[1]] == first) {
@@ -237,22 +229,26 @@ int main(int argc, const char * argv[]) {
                     } else {
                         write(clnt_b, win, strlen(win));
                         write(clnt_a, lose, strlen(lose));
+                        break;
                     }
                 }
-                sleep(2);
+                if (flag) {
+                    cur_idx = one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
+                } else {
+                    cur_idx = one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
+                }
+                // 刷新客户端的棋盘
+                write(clnt_a, chess_board, 9);
+                write(clnt_b, chess_board, 9);
+                sleep(1);
             }
-            
-        close(clnt_a);
-        close(clnt_b);
-        std::cout << "client disconnected..." << std::endl;
-        return 0;
+            sleep(2);
+            close(clnt_a);
+            close(clnt_b);
+            // return 0;
         }
-        
-        
-        
     }
-    
     close(serv_sock);
-    
+    std::cout << "lalala" << std::endl;
     return 0;
 }

@@ -49,5 +49,5 @@ A collection of some projects during learning c++.
 
 游戏文件：
 
-- simpleTTT_server.cpp 只能双人游戏，不能高并发的服务器版本，只用到了select，还是有bug
+- simpleTTT_server.cpp 只能双人游戏，不能高并发的服务器版本，只用到了select，可玩
 - myTTT系列，目前是个bug，谨慎运行
