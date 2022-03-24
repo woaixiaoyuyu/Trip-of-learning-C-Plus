@@ -91,9 +91,6 @@ int main(int argc, char* argv[]) {
                 choice[0] = x + '0';
                 choice[2] = y + '0';
                 write(sock, choice, 4);
-                read(sock, chess_board, 9);
-                show_chess_board(chess_board);
-                printf("wait another player...\n");
                 break;
             }
         } else if (strcmp(message, "you win") == 0) {
@@ -101,8 +98,10 @@ int main(int argc, char* argv[]) {
             printf("you wiil gain overnight famous.\n");
         } else if (strcmp(message, "you lose") == 0) {
             printf("vegetable.\n");
-        } else {
-            
+        } else if (recv_len == 9) {
+            memcpy(chess_board, message ,9);
+            show_chess_board(chess_board);
+            printf("wait another player...\n");
         }
         sleep(2);
     }

@@ -45,8 +45,8 @@ void error_handling(std::string message) {
 }
 
 // one turn 一名玩家的一次交互
-void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, int len, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
-    write(clnt_sock, str, len);
+void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
+    write(clnt_sock, str, strlen(str));
     // 等待clnt_a的选择
     int fd_num;
     char choice[5];
@@ -69,7 +69,6 @@ void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, int len, s
                 int x = choice[0] - '0', y = choice[2] - '0';
                 chess_board[x][y] = sym;
                 flag = !flag;
-                std::cout << flag << std::endl;
                 break;
             }
         }
@@ -169,13 +168,13 @@ int main(int argc, const char * argv[]) {
             char str2[] = "now it's your turn.";
             while (true) {
                 if (flag) {
-                    one_turn(fd_max, clnt_a, a_reads, str2, 30,timeout, flag, first, chess_board);
-                    // 刷新客户端的棋盘
-                    write(clnt_a, chess_board, 9);
+                    one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
                 } else {
-                    one_turn(fd_max, clnt_b, b_reads, str2, 30,timeout, flag, second, chess_board);
-                    write(clnt_a, chess_board, 9);
+                    one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
                 }
+                // 刷新客户端的棋盘
+                write(clnt_a, chess_board, 9);
+                write(clnt_b, chess_board, 9);
                 // 判断输赢
                 
                 sleep(2);
