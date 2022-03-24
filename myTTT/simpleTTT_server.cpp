@@ -45,7 +45,8 @@ void error_handling(std::string message) {
 }
 
 // one turn 一名玩家的一次交互
-void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
+int* one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
+    int* cur_idx = new int[2]{-1,-1};
     write(clnt_sock, str, strlen(str));
     // 等待clnt_a的选择
     int fd_num;
@@ -68,12 +69,62 @@ void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct tim
                 std::cout << "finish one strp." << std::endl;
                 int x = choice[0] - '0', y = choice[2] - '0';
                 chess_board[x][y] = sym;
+                cur_idx[0] = x;
+                cur_idx[1] = y;
                 flag = !flag;
                 break;
             }
         }
         sleep(2);
     }
+    return cur_idx;
+}
+
+// 判断胜负
+bool judge(int* cur_idx, char chess_board[][3]) {
+    int x = cur_idx[0];
+    int y = cur_idx[1];
+    char temp = chess_board[x][y];
+    int cnt = 0;
+    // 判断这一列有没有三个一样的
+    for (int i = 0; i < x; i++) {
+        if (chess_board[i][y] == temp)
+            cnt++;
+    }
+    for (int i = x; i < 3; i++) {
+        if (chess_board[i][y] == temp)
+            cnt++;
+    }
+    if (cnt == 3)
+        return true;
+    // 判断这一行有没有三个一样的
+    cnt = 0;
+    for (int i = 0; i < y; i++) {
+        if (chess_board[x][i] == temp)
+            cnt++;
+    }
+    for (int i = y; i < 3; i++) {
+        if (chess_board[x][i] == temp)
+            cnt++;
+    }
+    if (cnt == 3)
+        return true;
+    // 如果在对角线上，判断一下对角线
+    if ((x == 0 && y == 0) ||
+        (x == 0 && y == 2) ||
+        (x == 2 && y == 0) ||
+        (x == 2 && y == 2) ||
+        (x == 1 && y == 1)) {
+        if (chess_board[0][0] == temp &&
+            chess_board[1][1] == temp &&
+            chess_board[2][2] == temp)
+            return true;
+        if (chess_board[0][2] == temp &&
+            chess_board[1][1] == temp &&
+            chess_board[2][0] == temp)
+            return true;
+    }
+    return false;
 }
 
 int main(int argc, const char * argv[]) {
@@ -166,17 +217,28 @@ int main(int argc, const char * argv[]) {
             // 与客户端开始交互
             bool flag = true;   // true 和clnt_a互动，反之则是clnt_b
             char str2[] = "now it's your turn.";
+            char win[] = "you win";
+            char lose[] = "you lose";
+            int* cur_idx;   // int cur_idx[2];
             while (true) {
                 if (flag) {
-                    one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
+                    cur_idx = one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
                 } else {
-                    one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
+                    cur_idx = one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
                 }
                 // 刷新客户端的棋盘
                 write(clnt_a, chess_board, 9);
                 write(clnt_b, chess_board, 9);
                 // 判断输赢
-                
+                if (judge(cur_idx, chess_board)) {
+                    if (chess_board[cur_idx[0]][cur_idx[1]] == first) {
+                        write(clnt_a, win, strlen(win));
+                        write(clnt_b, lose, strlen(lose));
+                    } else {
+                        write(clnt_b, win, strlen(win));
+                        write(clnt_a, lose, strlen(lose));
+                    }
+                }
                 sleep(2);
             }
             

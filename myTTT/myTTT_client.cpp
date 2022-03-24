@@ -96,8 +96,10 @@ int main(int argc, char* argv[]) {
         } else if (strcmp(message, "you win") == 0) {
             printf("niubility.\n");
             printf("you wiil gain overnight famous.\n");
+            break;
         } else if (strcmp(message, "you lose") == 0) {
             printf("vegetable.\n");
+            break;
         } else if (recv_len == 9) {
             memcpy(chess_board, message ,9);
             show_chess_board(chess_board);
