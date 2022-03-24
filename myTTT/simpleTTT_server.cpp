@@ -229,6 +229,7 @@ int main(int argc, const char * argv[]) {
                     } else {
                         write(clnt_b, win, strlen(win));
                         write(clnt_a, lose, strlen(lose));
+                        sleep(2);
                         break;
                     }
                 }
@@ -242,7 +243,6 @@ int main(int argc, const char * argv[]) {
                 write(clnt_b, chess_board, 9);
                 sleep(1);
             }
-            sleep(2);
             close(clnt_a);
             close(clnt_b);
             // return 0;
