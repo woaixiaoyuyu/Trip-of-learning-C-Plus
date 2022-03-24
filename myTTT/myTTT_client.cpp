@@ -72,11 +72,39 @@ int main(int argc, char* argv[]) {
     show_chess_board(chess_board);
     
     // 接收消息，进行对战
+    char choice[5];
+    int x = -1, y = -1;
     while(true) {
-        recv_len = read(sock, &message, BUF_SIZE - 1);
-        if (recv_len > 0)
-            printf("%s\n", message);
-        sleep(3);
+        recv_len = read(sock, message, BUF_SIZE - 1);
+        if (recv_len < 1)
+            break;
+        
+        if (strcmp(message, "now it's your turn.") == 0) {
+            while (true) {
+                printf("input the x and y of your choice(etc. 0 2) : ");
+                scanf("%d %d", &x,&y);
+                if (x < 0 || x > 2 || y < 0 || y > 2 || chess_board[x][y] != '?') {
+                    printf("wrong choice, try again.\n");
+                    sleep(1);
+                    continue;
+                }
+                choice[0] = x + '0';
+                choice[2] = y + '0';
+                write(sock, choice, 4);
+                printf("wait another player...\n");
+                break;
+            }
+        } else if (strcmp(message, "you win") == 0) {
+            printf("niubility.\n");
+            printf("you wiil gain overnight famous.\n");
+        } else if (strcmp(message, "you lose") == 0) {
+            printf("vegetable.\n");
+        } else {
+            // 收到刷新棋盘的数据
+            read(sock, chess_board, 9);
+            show_chess_board(chess_board);
+        }
+        sleep(2);
     }
     
     close(sock);
