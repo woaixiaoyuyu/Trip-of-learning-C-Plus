@@ -2,13 +2,14 @@
 //  main.cpp
 //  myTTTServer
 //
-//  Created by xiaoyuyu on 2022/3/22.
+//  Created by xiaoyuyu on 2022/3/25.
 //  Copyright © 2022 xiaoyuyu. All rights reserved.
 //
 
 /**
  井字游戏
  服务端
+ 可并发
  */
 
 #include <iostream>
@@ -34,6 +35,9 @@ static std::deque<int> clnt_queue;
 static std::deque<int> gaming_queue;
 static int players_number = 0;
 static int playing_number = 0;
+static char first = 'x';
+static char second = 'o';
+static int cnt = 0;  // 已经开始游戏的场次，结束了不扣除
 pid_t pid;
 
 // 处理错误
@@ -43,34 +47,88 @@ void error_handling(std::string message) {
 }
 
 // one turn 一名玩家的一次交互
-void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag) {
-    printf("one turn id is : %d\n", clnt_sock);
-    write(clnt_sock, str, sizeof(str));
+int* one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
+    int* cur_idx = new int[2]{-1,-1};
+    write(clnt_sock, str, strlen(str));
     // 等待clnt_a的选择
     int fd_num;
+    char choice[5];
     ssize_t str_len;
-    char message[BUF_SIZE];
     while (true) {
         if ((fd_num = select(fd_max + 1, &cpy_reads, 0, 0, NULL)) == -1) {
-            printf("fd_num is : %d\n", fd_num);
+            printf("fd_num : %d.\n", fd_num);
             break;
         }
         if (fd_num == 0)
             continue;
         if (FD_ISSET(clnt_sock, &cpy_reads)) {
-            str_len = read(clnt_sock, message, BUF_SIZE);
+            str_len = read(clnt_sock, choice, 4);
             if (str_len == 0) {
                 FD_CLR(clnt_sock, &cpy_reads);
                 close(clnt_sock);
                 printf("closed client: %d\n", clnt_sock);
             } else {
                 std::cout << "finish one strp." << std::endl;
+                int x = choice[0] - '0', y = choice[2] - '0';
+                chess_board[x][y] = sym;
+                cur_idx[0] = x;
+                cur_idx[1] = y;
                 flag = !flag;
                 break;
             }
         }
-        sleep(3);
+        sleep(1);
     }
+    return cur_idx;
+}
+
+// 判断胜负
+bool judge(int* cur_idx, char chess_board[][3]) {
+    if (cur_idx[0] < 0 || cur_idx[1] < 0)
+        return false;
+    int x = cur_idx[0];
+    int y = cur_idx[1];
+    char temp = chess_board[x][y];
+    int cnt = 0;
+    // 判断这一列有没有三个一样的
+    for (int i = 0; i < x; i++) {
+        if (chess_board[i][y] == temp)
+            cnt++;
+    }
+    for (int i = x; i < 3; i++) {
+        if (chess_board[i][y] == temp)
+            cnt++;
+    }
+    if (cnt == 3)
+        return true;
+    // 判断这一行有没有三个一样的
+    cnt = 0;
+    for (int i = 0; i < y; i++) {
+        if (chess_board[x][i] == temp)
+            cnt++;
+    }
+    for (int i = y; i < 3; i++) {
+        if (chess_board[x][i] == temp)
+            cnt++;
+    }
+    if (cnt == 3)
+        return true;
+    // 如果在对角线上，判断一下对角线
+    if ((x == 0 && y == 0) ||
+        (x == 0 && y == 2) ||
+        (x == 2 && y == 0) ||
+        (x == 2 && y == 2) ||
+        (x == 1 && y == 1)) {
+        if (chess_board[0][0] == temp &&
+            chess_board[1][1] == temp &&
+            chess_board[2][2] == temp)
+            return true;
+        if (chess_board[0][2] == temp &&
+            chess_board[1][1] == temp &&
+            chess_board[2][0] == temp)
+            return true;
+    }
+    return false;
 }
 
 int main(int argc, const char * argv[]) {
@@ -99,7 +157,7 @@ int main(int argc, const char * argv[]) {
         error_handling("bind error");
     }
     
-    if (listen(serv_sock, 5) == -1) {
+    if (listen(serv_sock, 4) == -1) {
         error_handling("listen error");
     }
     
@@ -114,7 +172,6 @@ int main(int argc, const char * argv[]) {
         if (clnt_sock == -1) {
             continue;
         } else {
-            printf("the clnt in parent is : %d\n", clnt_sock);
             players_number++;
             printf("A new player has connected.\n");
             clnt_queue.emplace_back(clnt_sock); // 加入等待队列
@@ -124,90 +181,89 @@ int main(int argc, const char * argv[]) {
             // write(clnt_a, str, sizeof(str));
         }
         
-        if (players_number >=2) {
+        if (players_number / 2 > cnt) {
             // 人数大于2即可开始游戏
-            players_number -= 2;
+            cnt += 1;
             playing_number = 2;
-            pid = fork();   // 开子进程提供游戏服务
-            if (pid == -1) {    // 失败时返回-1
-                error_handling("something wrong in server");
-                exit(1);
-            }
-        }
-        
-        printf("id : %d\n", getpid());
-        
-        // 子进程运行区域
-        if (pid == 0 && playing_number == 2) {
-            printf("parent id : %d\n", getppid());
-            printf("child id : %d\n", getpid());
-            close(serv_sock);   // 把从父进程复制的serv socket关闭
+            pid = fork();
             
-            // 对每个子进程采取I/O复用select
-            struct timeval timeout;
-            fd_set reads, cpy_reads;
-            int fd_max = serv_sock;
-            FD_ZERO(&reads);
-            FD_SET(serv_sock, &reads);
-            timeout.tv_sec = 5;
-            timeout.tv_usec = 5000;
-            
-            // 获取对战双方的客户端套接字
-            int clnt_a = clnt_queue.front();
-            if (clnt_a > fd_max)
-                fd_max = clnt_a;
-            FD_SET(clnt_a, &reads);
-            clnt_queue.pop_front();
-           
-            int clnt_b = clnt_queue.front();
-            if (clnt_b > fd_max)
-                fd_max = clnt_b;
-            FD_SET(clnt_b, &reads);
-            clnt_queue.pop_front();
-            
-            char str[] = "hello";
-            write(clnt_a, str, sizeof(str));
-            
-            cpy_reads = reads;
-            
-            printf("the clnt in queue is : %d\n", clnt_a);
-            printf("the clnt in queue is : %d\n", clnt_b);
-            printf("queue size : %d\n", clnt_queue.size());
-            
-            // 激活服务端的棋盘，客户端会自己激活本地的棋盘，服务端的棋盘没必要展示
-            char chess_board[width][width];
-            memset(chess_board, '?', sizeof(chess_board));
-            
-            // 与客户端开始交互
-            bool flag = true;   // true 和clnt_a互动，反之则是clnt_b
-            char str2[] = "now it's your turn.";
-            printf("fd_max is : %d\n", fd_max);
-            while (true) {
-                if (flag) {
-                    one_turn(fd_max, clnt_a, cpy_reads, str2, timeout, flag);
-                } else {
-                    one_turn(fd_max, clnt_b, cpy_reads, str2, timeout, flag);
+            if (pid == 0) {
+                // 对每个子进程采取I/O复用select
+                struct timeval timeout;
+                fd_set reads, a_reads, b_reads;
+                int fd_max = serv_sock;
+                FD_ZERO(&reads);
+                FD_ZERO(&a_reads);
+                FD_ZERO(&b_reads);
+                FD_SET(serv_sock, &reads);
+                timeout.tv_sec = 5;
+                timeout.tv_usec = 5000;
+                 
+                // 获取对战双方的客户端套接字
+                int clnt_a = clnt_queue.front();
+                if (clnt_a > fd_max)
+                    fd_max = clnt_a;
+                FD_SET(clnt_a, &a_reads);
+                FD_SET(clnt_a, &reads);
+                clnt_queue.pop_front();
+                
+                int clnt_b = clnt_queue.front();
+                if (clnt_b > fd_max)
+                    fd_max = clnt_b;
+                FD_SET(clnt_b, &b_reads);
+                FD_SET(clnt_b, &reads);
+                clnt_queue.pop_front();
+                 
+                // 激活服务端的棋盘，客户端会自己激活本地的棋盘，服务端的棋盘没必要展示
+                char chess_board[width][width];
+                memset(chess_board, '?', sizeof(chess_board));
+                 
+                // 与客户端开始交互
+                bool flag = true;   // true 和clnt_a互动，反之则是clnt_b
+                char str2[] = "now it's your turn.";
+                char win[] = "you win";
+                char lose[] = "you lose";
+                int* cur_idx = new int[2]{-1,-1};
+                while (true) {
+                    // 判断输赢
+                    if (judge(cur_idx, chess_board)) {
+                        if (chess_board[cur_idx[0]][cur_idx[1]] == first) {
+                            write(clnt_a, win, strlen(win));
+                            write(clnt_b, lose, strlen(lose));
+                        } else {
+                            write(clnt_b, win, strlen(win));
+                            write(clnt_a, lose, strlen(lose));
+                            sleep(2);
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        cur_idx = one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
+                    } else {
+                        cur_idx = one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
+                    }
+                    // 刷新客户端的棋盘
+                    write(clnt_a, chess_board, 9);
+                    write(clnt_b, chess_board, 9);
+                    sleep(1);
                 }
-                sleep(3);
+                close(clnt_a);
+                close(clnt_b);
+                // return 0;
+            } else {
+                if (gaming_queue.size() > clnt_queue.size()) {
+                    int clnt_a = clnt_queue.front();
+                    close(clnt_a);
+                    clnt_queue.pop_front();
+                    
+                    int clnt_b = clnt_queue.front();
+                    close(clnt_b);
+                    clnt_queue.pop_front();
+                }
             }
-            
-            close(clnt_a);
-            close(clnt_b);
-            std::cout << "client disconnected..." << std::endl;
-            return 0;
-        } else {
-            // 父进程不间断的销毁自身保存的客户端文件符，防止僵尸进程
-            int clnt_a = gaming_queue.front();
-            gaming_queue.pop_front();
-            int clnt_b = gaming_queue.front();
-            gaming_queue.pop_front();
-            close(clnt_a);
-            close(clnt_b);
         }
-        sleep(3);
     }
-    
     close(serv_sock);
-    
+    std::cout << "lalala" << std::endl;
     return 0;
 }
