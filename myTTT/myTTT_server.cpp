@@ -47,8 +47,7 @@ void error_handling(std::string message) {
 }
 
 // one turn 一名玩家的一次交互
-int* one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3]) {
-    int* cur_idx = new int[2]{-1,-1};
+void one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct timeval timeout, bool& flag, char sym, char chess_board[][3], int* cur_idx) {
     write(clnt_sock, str, strlen(str));
     // 等待clnt_a的选择
     int fd_num;
@@ -79,7 +78,7 @@ int* one_turn(int fd_max, int clnt_sock, fd_set cpy_reads, char* str, struct tim
         }
         sleep(1);
     }
-    return cur_idx;
+    return;
 }
 
 // 判断胜负
@@ -238,15 +237,17 @@ int main(int argc, const char * argv[]) {
                         }
                     }
                     if (flag) {
-                        cur_idx = one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board);
+                        one_turn(fd_max, clnt_a, a_reads, str2, timeout, flag, first, chess_board, cur_idx);
                     } else {
-                        cur_idx = one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board);
+                        one_turn(fd_max, clnt_b, b_reads, str2, timeout, flag, second, chess_board, cur_idx);
                     }
                     // 刷新客户端的棋盘
                     write(clnt_a, chess_board, 9);
                     write(clnt_b, chess_board, 9);
                     sleep(1);
                 }
+                delete[] cur_idx;
+                cur_idx = nullptr;
                 close(clnt_a);
                 close(clnt_b);
                 // return 0;
