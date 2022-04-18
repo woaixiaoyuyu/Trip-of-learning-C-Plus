@@ -232,7 +232,7 @@ int main(int argc, const char * argv[]) {
                         } else {
                             write(clnt_b, win, strlen(win));
                             write(clnt_a, lose, strlen(lose));
-                            sleep(2);
+                            sleep(3);
                             break;
                         }
                     }
