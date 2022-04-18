@@ -15,6 +15,8 @@
 		CB2AC920280D488E0099A852 /* VisitorPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */; };
 		CB2AC922280D57D90099A852 /* CommandPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC921280D57D90099A852 /* CommandPattern.cpp */; };
 		CB2AC924280D699F0099A852 /* CommandPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC923280D699F0099A852 /* CommandPattern_new.cpp */; };
+		CB2AC926280D96B50099A852 /* ObjectPoolPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC925280D96B50099A852 /* ObjectPoolPattern.cpp */; };
+		CB2AC928280DA2BB0099A852 /* ObjectPoolPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC927280DA2BB0099A852 /* ObjectPoolPattern_new.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +41,8 @@
 		CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VisitorPattern_new.cpp; sourceTree = "<group>"; };
 		CB2AC921280D57D90099A852 /* CommandPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CommandPattern.cpp; sourceTree = "<group>"; };
 		CB2AC923280D699F0099A852 /* CommandPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CommandPattern_new.cpp; sourceTree = "<group>"; };
+		CB2AC925280D96B50099A852 /* ObjectPoolPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPoolPattern.cpp; sourceTree = "<group>"; };
+		CB2AC927280DA2BB0099A852 /* ObjectPoolPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPoolPattern_new.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,8 @@
 				CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */,
 				CB2AC921280D57D90099A852 /* CommandPattern.cpp */,
 				CB2AC923280D699F0099A852 /* CommandPattern_new.cpp */,
+				CB2AC925280D96B50099A852 /* ObjectPoolPattern.cpp */,
+				CB2AC927280DA2BB0099A852 /* ObjectPoolPattern_new.cpp */,
 			);
 			path = myDesignPatterns;
 			sourceTree = "<group>";
@@ -142,10 +148,12 @@
 			files = (
 				CB2AC91E280D41240099A852 /* VisitorPattern.cpp in Sources */,
 				CB2AC915280D051A0099A852 /* SingletonPattern.cpp in Sources */,
+				CB2AC928280DA2BB0099A852 /* ObjectPoolPattern_new.cpp in Sources */,
 				CB2AC920280D488E0099A852 /* VisitorPattern_new.cpp in Sources */,
 				CB2AC918280D0AD70099A852 /* SingletonPattern_new.cpp in Sources */,
 				CB2AC922280D57D90099A852 /* CommandPattern.cpp in Sources */,
 				CB2AC924280D699F0099A852 /* CommandPattern_new.cpp in Sources */,
+				CB2AC926280D96B50099A852 /* ObjectPoolPattern.cpp in Sources */,
 				CB2AC91A280D0F590099A852 /* ObserverPattern.cpp in Sources */,
 				CB2AC91C280D36060099A852 /* ObserverPattern_new.cpp in Sources */,
 			);
