@@ -47,24 +47,24 @@ private:
 template <class T>
 T* Singleton_new<T>::instance = nullptr;
 
-struct A {
-    A(){}
-};
-
-struct B {
-    B(int x) {}
-};
-
-struct C {
-    C(int x, double y) {}
-};
-
-int main() {
-    Singleton_new<A>::Instance();
-    Singleton_new<B>::Instance(1);
-    Singleton_new<C>::Instance(1, 2.2);
-    
-    Singleton_new<A>::DestoryInstance();
-    Singleton_new<B>::DestoryInstance();
-    Singleton_new<C>::DestoryInstance();
-}
+//struct A {
+//    A(){}
+//};
+//
+//struct B {
+//    B(int x) {}
+//};
+//
+//struct C {
+//    C(int x, double y) {}
+//};
+//
+//int main() {
+//    Singleton_new<A>::Instance();
+//    Singleton_new<B>::Instance(1);
+//    Singleton_new<C>::Instance(1, 2.2);
+//
+//    Singleton_new<A>::DestoryInstance();
+//    Singleton_new<B>::DestoryInstance();
+//    Singleton_new<C>::DestoryInstance();
+//}
