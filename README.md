@@ -51,3 +51,15 @@ A collection of some projects during learning c++.
 
 - simpleTTT_server.cpp 只能双人游戏，不能高并发的服务器版本，只用到了select，可玩
 - myTTT系列，目前是个bug，谨慎运行
+
+## myDesignPatterns
+
+参考如下资料，整理的设计模式以及改进：
+
+- 菜鸟
+- <<深入应用C++11>>
+- <<Design Patterns, Elements of Reusable Object Oriented Software (Gang of Four)>>
+
+代码的介绍文档：https://woaixiaoyuyu.github.io/2022/04/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%94%B6%E9%9B%86/
+
+以后要是有新的收获会进一步补充。
