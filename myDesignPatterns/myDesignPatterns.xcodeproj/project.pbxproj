@@ -11,6 +11,8 @@
 		CB2AC918280D0AD70099A852 /* SingletonPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */; };
 		CB2AC91A280D0F590099A852 /* ObserverPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC919280D0F580099A852 /* ObserverPattern.cpp */; };
 		CB2AC91C280D36060099A852 /* ObserverPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC91B280D36060099A852 /* ObserverPattern_new.cpp */; };
+		CB2AC91E280D41240099A852 /* VisitorPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC91D280D41240099A852 /* VisitorPattern.cpp */; };
+		CB2AC920280D488E0099A852 /* VisitorPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +33,8 @@
 		CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SingletonPattern_new.cpp; sourceTree = "<group>"; };
 		CB2AC919280D0F580099A852 /* ObserverPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObserverPattern.cpp; sourceTree = "<group>"; };
 		CB2AC91B280D36060099A852 /* ObserverPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ObserverPattern_new.cpp; sourceTree = "<group>"; };
+		CB2AC91D280D41240099A852 /* VisitorPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VisitorPattern.cpp; sourceTree = "<group>"; };
+		CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = VisitorPattern_new.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +71,8 @@
 				CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */,
 				CB2AC919280D0F580099A852 /* ObserverPattern.cpp */,
 				CB2AC91B280D36060099A852 /* ObserverPattern_new.cpp */,
+				CB2AC91D280D41240099A852 /* VisitorPattern.cpp */,
+				CB2AC91F280D488E0099A852 /* VisitorPattern_new.cpp */,
 			);
 			path = myDesignPatterns;
 			sourceTree = "<group>";
@@ -128,7 +134,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB2AC91E280D41240099A852 /* VisitorPattern.cpp in Sources */,
 				CB2AC915280D051A0099A852 /* SingletonPattern.cpp in Sources */,
+				CB2AC920280D488E0099A852 /* VisitorPattern_new.cpp in Sources */,
 				CB2AC918280D0AD70099A852 /* SingletonPattern_new.cpp in Sources */,
 				CB2AC91A280D0F590099A852 /* ObserverPattern.cpp in Sources */,
 				CB2AC91C280D36060099A852 /* ObserverPattern_new.cpp in Sources */,

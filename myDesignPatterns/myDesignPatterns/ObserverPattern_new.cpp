@@ -66,19 +66,19 @@ void print(int a, int b) {
     std::cout << a << ", " << b << std::endl;
 }
 
-int main() {
-    Events<std::function<void(int, int)>> event;
-    auto key = event.Connect(print);
-    stA t;
-    t.print();
-    event.Connect([&t](int a, int b) -> void {
-        t.a = a;
-        t.b = b;
-    });
-    int a = 1, b = 2;
-    event.Notify(a, b);
-    t.print();
-    event.Disconnect(key);
-    event.Notify(3, 4);
-    t.print();
-}
+//int main() {
+//    Events<std::function<void(int, int)>> event;
+//    auto key = event.Connect(print);
+//    stA t;
+//    t.print();
+//    event.Connect([&t](int a, int b) -> void {
+//        t.a = a;
+//        t.b = b;
+//    });
+//    int a = 1, b = 2;
+//    event.Notify(a, b);
+//    t.print();
+//    event.Disconnect(key);
+//    event.Notify(3, 4);
+//    t.print();
+//}
