@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CB2AC915280D051A0099A852 /* SingletonPattern.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC914280D051A0099A852 /* SingletonPattern.cpp */; };
+		CB2AC918280D0AD70099A852 /* SingletonPattern_new.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		CB2AC90A280D033A0099A852 /* myDesignPatterns */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = myDesignPatterns; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB2AC914280D051A0099A852 /* SingletonPattern.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SingletonPattern.cpp; sourceTree = "<group>"; };
+		CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SingletonPattern_new.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				CB2AC914280D051A0099A852 /* SingletonPattern.cpp */,
+				CB2AC916280D0AD70099A852 /* SingletonPattern_new.cpp */,
 			);
 			path = myDesignPatterns;
 			sourceTree = "<group>";
@@ -120,6 +123,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB2AC915280D051A0099A852 /* SingletonPattern.cpp in Sources */,
+				CB2AC918280D0AD70099A852 /* SingletonPattern_new.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

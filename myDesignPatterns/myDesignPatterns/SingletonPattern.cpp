@@ -73,24 +73,24 @@ private:
 template <class T>
 T* Singleton<T>::instance = nullptr;
 
-struct A {
-    A(){}
-};
-
-struct B {
-    B(int x) {}
-};
-
-struct C {
-    C(int x, double y) {}
-};
-
-int main() {
-    Singleton<A>::Instance();
-    Singleton<B>::Instance(1);
-    Singleton<C>::Instance(1, 2.2);
-    
-    Singleton<A>::DestoryInstance();
-    Singleton<B>::DestoryInstance();
-    Singleton<C>::DestoryInstance();
-}
+//struct A {
+//    A(){}
+//};
+//
+//struct B {
+//    B(int x) {}
+//};
+//
+//struct C {
+//    C(int x, double y) {}
+//};
+//
+//int main() {
+//    Singleton<A>::Instance();
+//    Singleton<B>::Instance(1);
+//    Singleton<C>::Instance(1, 2.2);
+//
+//    Singleton<A>::DestoryInstance();
+//    Singleton<B>::DestoryInstance();
+//    Singleton<C>::DestoryInstance();
+//}
