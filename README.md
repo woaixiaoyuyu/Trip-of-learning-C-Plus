@@ -63,3 +63,9 @@ A collection of some projects during learning c++.
 代码的介绍文档：https://woaixiaoyuyu.github.io/2022/04/18/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E6%94%B6%E9%9B%86/
 
 以后要是有新的收获会进一步补充。
+
+## mySmartPointer
+
+准备实现一下智能指针，便于我进一步理解，心血来潮。
+
+完成unique_ptr和shared_ptr就算成功，施工ing
