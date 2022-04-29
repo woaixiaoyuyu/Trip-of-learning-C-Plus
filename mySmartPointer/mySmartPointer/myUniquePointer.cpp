@@ -127,7 +127,7 @@ constexpr bool is_bounded_array_v<T[N]> = true;
 template<typename T, typename... Args>
 std::enable_if_t<!std::is_array<T>::value, u_ptr<T>>
 make_uptr(Args&&... args) {
-    return u_ptr<T>(std::forward<Args>(args)...);
+    return u_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 /**
