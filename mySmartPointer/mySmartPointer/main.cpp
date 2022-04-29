@@ -60,7 +60,8 @@ void test2() {
 
 void test3() {
     u_ptr<std::string> p(new std::string("hello world."));
-    std::cout << *p << std::endl;
+    std::string *s = p.get();
+    std::cout << *s << std::endl;
 }
 
 int main(int argc, const char * argv[]) {
