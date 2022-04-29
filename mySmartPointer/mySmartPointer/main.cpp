@@ -64,6 +64,34 @@ void test3() {
     std::cout << *s << std::endl;
 }
 
+struct Vec3 {
+    int x, y, z;
+    // C++20 起不再需要以下构造函数
+    Vec3(int x = 0, int y = 0, int z = 0) noexcept : x(x), y(y), z(z) {
+    }
+    friend std::ostream& operator<<(std::ostream& os, const Vec3& v)
+    {
+        return os << '{' << "x:" << v.x << " y:" << v.y << " z:" << v.z  << '}';
+    }
+};
+ 
+void test4() {
+    // 使用默认构造函数。
+    u_ptr<Vec3> v1 = make_uptr<Vec3>();
+    // 使用匹配这些参数的构造函数
+    u_ptr<Vec3> v2 = make_uptr<Vec3>(0, 1, 2);
+//    // 创建指向 5 个元素数组的 unique_ptr
+//    u_ptr<Vec3[]> v3 = make_uptr<Vec3[]>(5);
+//
+//    std::cout << "make_uptr<Vec3>():      " << *v1 << '\n'
+//              << "make_uptr<Vec3>(0,1,2): " << *v2 << '\n'
+//              << "make_uptr<Vec3[]>(5):   " << '\n';
+//    for (int i = 0; i < 5; i++) {
+//        std::cout << "     " << v3[i] << '\n';
+//    }
+}
+
+
 int main(int argc, const char * argv[]) {
     
     std::cout << "=====test1=====" << std::endl;
@@ -74,6 +102,9 @@ int main(int argc, const char * argv[]) {
   
     std::cout << "=====test3=====" << std::endl;
     test3();
+    
+    std::cout << "=====test4=====" << std::endl;
+    test4();
     
     return 0;
 }

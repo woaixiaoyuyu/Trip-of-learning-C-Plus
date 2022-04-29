@@ -10,8 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 
-// class Deleter = std::default_delete<T>
-template <typename T>
+template <typename T, class Deleter = std::default_delete<T>>
 class u_ptr {
 public:
     T* ptr = nullptr;
@@ -112,3 +111,34 @@ public:
         return operator->();
     }
 };
+
+namespace detail {
+template<class>
+constexpr bool is_unbounded_array_v = false;
+template<class T>
+constexpr bool is_unbounded_array_v<T[]> = true;
+ 
+template<class>
+constexpr bool is_bounded_array_v = false;
+template<class T, std::size_t N>
+constexpr bool is_bounded_array_v<T[N]> = true;
+} // namespace detail
+
+template<typename T, typename... Args>
+std::enable_if<!std::is_array<T>::value, u_ptr<T>>
+make_uptr(Args&&... args) {
+    return u_ptr<T>(std::forward<Args>(args)...);
+}
+
+/**
+begin with C++14
+template< class T >
+using remove_extent_t = typename remove_extent<T>::type;
+*/
+
+// 对于数组
+template<class T>
+std::enable_if_t<detail::is_unbounded_array_v<T>, u_ptr<T>>
+make_unique(std::size_t n) {
+    return u_ptr<T>(new std::remove_extent_t<T>[n]());
+}
