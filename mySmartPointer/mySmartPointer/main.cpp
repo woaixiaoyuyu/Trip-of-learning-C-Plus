@@ -85,7 +85,7 @@ void test4() {
     // 使用默认构造函数。
     u_ptr<Vec3> v1 = make_uptr<Vec3>();
     // 使用匹配这些参数的构造函数
-    u_ptr<Vec3> v2 = make_uptr<Vec3>(new Vec3(0, 1, 2));
+    u_ptr<Vec3> v2 = make_uptr<Vec3>(Vec3(0, 1, 2));
     // 创建指向 5 个元素数组的 unique_ptr
     u_ptr<Vec3[]> v3 = make_uptr<Vec3[]>(5);
     
