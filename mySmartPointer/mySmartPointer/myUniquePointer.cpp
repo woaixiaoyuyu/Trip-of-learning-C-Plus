@@ -139,6 +139,6 @@ using remove_all_extents_t = typename remove_extent<T>::type;
 // 对于数组
 template<class T>
 std::enable_if_t<detail::is_unbounded_array_v<T>, u_ptr<T>>
-make_unique(std::size_t n) {
+make_uptr(std::size_t n) {
     return u_ptr<T>(new std::remove_all_extents_t<T>[n]());
 }

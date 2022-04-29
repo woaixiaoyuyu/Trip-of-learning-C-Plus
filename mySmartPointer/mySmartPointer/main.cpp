@@ -67,11 +67,17 @@ void test3() {
 struct Vec3 {
     int x, y, z;
     // C++20 起不再需要以下构造函数
-    Vec3(int x = 0, int y = 0, int z = 0) noexcept : x(x), y(y), z(z) {
+    Vec3(int _x = 0, int _y = 0, int _z = 0) noexcept : x(_x), y(_y), z(_z) {
     }
+    
+    Vec3& operator*() {
+        return *this;
+    }
+    
     friend std::ostream& operator<<(std::ostream& os, const Vec3& v)
     {
-        return os << '{' << "x:" << v.x << " y:" << v.y << " z:" << v.z  << '}';
+        os << '{' << "x:" << v.x << " y:" << v.y << " z:" << v.z  << '}';
+        return os;
     }
 };
  
@@ -82,9 +88,12 @@ void test4() {
      u_ptr<Vec3> v2 = make_uptr<Vec3>(new Vec3(0, 1, 2));
     // 创建指向 5 个元素数组的 unique_ptr
     u_ptr<Vec3[]> v3 = make_uptr<Vec3[]>(5);
+    
+    Vec3* x = v1.get();
+    std::cout << *x << std::endl;
 
     std::cout << "make_uptr<Vec3>():      " << *v1 << '\n'
-              << "make_uptr<Vec3>(0,1,2): " << *v2 << '\n'
+              << "make_uptr<Vec3>(new Vec3(0, 1, 2)): " << *v2 << '\n'
               << "make_uptr<Vec3[]>(5):   " << '\n';
     for (int i = 0; i < 5; i++) {
         std::cout << "     " << v3[i] << '\n';
