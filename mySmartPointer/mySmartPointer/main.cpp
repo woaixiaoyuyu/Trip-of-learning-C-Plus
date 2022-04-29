@@ -79,16 +79,16 @@ void test4() {
     // 使用默认构造函数。
     u_ptr<Vec3> v1 = make_uptr<Vec3>();
     // 使用匹配这些参数的构造函数
-    u_ptr<Vec3> v2 = make_uptr<Vec3>(0, 1, 2);
-//    // 创建指向 5 个元素数组的 unique_ptr
-//    u_ptr<Vec3[]> v3 = make_uptr<Vec3[]>(5);
-//
-//    std::cout << "make_uptr<Vec3>():      " << *v1 << '\n'
-//              << "make_uptr<Vec3>(0,1,2): " << *v2 << '\n'
-//              << "make_uptr<Vec3[]>(5):   " << '\n';
-//    for (int i = 0; i < 5; i++) {
-//        std::cout << "     " << v3[i] << '\n';
-//    }
+     u_ptr<Vec3> v2 = make_uptr<Vec3>(new Vec3(0, 1, 2));
+    // 创建指向 5 个元素数组的 unique_ptr
+    u_ptr<Vec3[]> v3 = make_uptr<Vec3[]>(5);
+
+    std::cout << "make_uptr<Vec3>():      " << *v1 << '\n'
+              << "make_uptr<Vec3>(0,1,2): " << *v2 << '\n'
+              << "make_uptr<Vec3[]>(5):   " << '\n';
+    for (int i = 0; i < 5; i++) {
+        std::cout << "     " << v3[i] << '\n';
+    }
 }
 
 
