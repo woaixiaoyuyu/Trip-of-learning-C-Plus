@@ -102,29 +102,29 @@ void test4() {
 
 // 测试u_ptr自定义删除器
 struct deleter {
-    void operator()() {
-        std::cout << "仿函数 deleter." << std::endl;
+    void operator()(Box* ptr) {
+        std::cout << "仿函数 deleter1." << std::endl;
     }
 };
 
 struct deleter2 {
-    void operator()(int x) {
-        std::cout << "仿函数 deleter " << x << "." << std::endl;
+    void operator()(Box* ptr) {
+        std::cout << "仿函数 deleter2." << std::endl;
     }
 };
 
 void test5() {
-    auto f = []() -> void {
-        std::cout << "lambda deleter." << std::endl;
+    auto f = [](Box* ptr) -> void {
+        std::cout << "lambda deleter1." << std::endl;
     };
-    auto f2 = [](int x) -> void {
-        std::cout << "lambda deleter " << x << "." << std::endl;
+    auto f2 = [](Box* ptr) -> void {
+        std::cout << "lambda deleter2." << std::endl;
     };
-    u_ptr<Box, void(*)()> box1(new Box, f);
-    u_ptr<Box, std::function<void(int)>> box2(new Box, std::bind(f2, 2));
-    u_ptr<Box, std::function<void()>> box3(new Box, deleter());
+    u_ptr<Box, void(*)(Box* ptr)> box1(new Box, f);
+    u_ptr<Box, std::function<void(Box* ptr)>> box2(new Box, f2);
+    u_ptr<Box, std::function<void(Box* ptr)>> box3(new Box, deleter());
     deleter2 deletee;
-    u_ptr<Box, std::function<void(int)>> box4(new Box, std::bind(deletee, 3));
+    u_ptr<Box, std::function<void(Box* ptr)>> box4(new Box, deletee);
 }
 
 

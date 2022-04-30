@@ -51,7 +51,7 @@ public:
     
     ~u_ptr() {
         if (ptr != nullptr) {
-            deleter();
+            deleter(ptr);
         }
     }
     
