@@ -9,11 +9,13 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdexcept>
+#include <functional>
 
 template <typename T, class Deleter = std::default_delete<T>>
 class u_ptr {
 public:
     T* ptr = nullptr;
+    Deleter deleter;   // 存储自定义的删除器
 public:
     T& operator*() {
         return *(ptr);
@@ -27,7 +29,10 @@ public:
         
     }
     
-    u_ptr(T* obj) : ptr(obj){
+    u_ptr(T* obj) : ptr(obj) {
+    }
+    
+    u_ptr(T* obj, Deleter f) : ptr(obj), deleter(f){
     }
     
     u_ptr(u_ptr& p) = delete;
@@ -46,9 +51,8 @@ public:
     
     ~u_ptr() {
         if (ptr != nullptr) {
-            delete ptr;
+            deleter();
         }
-        ptr = nullptr;
     }
     
     // 返回指向被管理对象的指针，如果无被管理对象，则为 nullptr。

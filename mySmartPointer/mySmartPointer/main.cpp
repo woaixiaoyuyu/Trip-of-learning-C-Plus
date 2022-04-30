@@ -100,6 +100,33 @@ void test4() {
     }
 }
 
+// 测试u_ptr自定义删除器
+struct deleter {
+    void operator()() {
+        std::cout << "仿函数 deleter." << std::endl;
+    }
+};
+
+struct deleter2 {
+    void operator()(int x) {
+        std::cout << "仿函数 deleter " << x << "." << std::endl;
+    }
+};
+
+void test5() {
+    auto f = []() -> void {
+        std::cout << "lambda deleter." << std::endl;
+    };
+    auto f2 = [](int x) -> void {
+        std::cout << "lambda deleter " << x << "." << std::endl;
+    };
+    u_ptr<Box, void(*)()> box1(new Box, f);
+    u_ptr<Box, std::function<void(int)>> box2(new Box, std::bind(f2, 2));
+    u_ptr<Box, std::function<void()>> box3(new Box, deleter());
+    deleter2 deletee;
+    u_ptr<Box, std::function<void(int)>> box4(new Box, std::bind(deletee, 3));
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -114,6 +141,9 @@ int main(int argc, const char * argv[]) {
     
     std::cout << "=====test4=====" << std::endl;
     test4();
+    
+    std::cout << "=====test5=====" << std::endl;
+    test5();
     
     return 0;
 }
