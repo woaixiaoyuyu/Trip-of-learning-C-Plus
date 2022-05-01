@@ -77,7 +77,7 @@ public:
     
     T operator[](int idx) {
         if (idx < 0) {
-            throw std::logic_error("can't access idx lower than zero.");
+            throw std::logic_error("can't access idx lower than zero.\n");
         }
         return ptr[idx];
     }

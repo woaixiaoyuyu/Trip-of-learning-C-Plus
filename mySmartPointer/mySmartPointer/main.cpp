@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "myUniquePointer.cpp"
+#include "mySharedPointer.cpp"
 #include <string>
 
 class A {
@@ -127,6 +128,29 @@ void test5() {
     u_ptr<Box, std::function<void(Box* ptr)>> box4(new Box, deletee);
 }
 
+void test6() {
+    s_ptr<A> p1(new A);
+    std::cout << p1.get() << std::endl;
+    p1->show();
+    std::cout << p1.use_count() << std::endl;
+    s_ptr<A> p2(p1);
+    p2->show();
+    std::cout << p1.get() << std::endl;
+    std::cout << p2.get() << std::endl;
+    
+    // Returns the number of shared_ptr objects
+    // referring to the same managed object.
+    std::cout << p1.use_count() << std::endl;
+    std::cout << p2.use_count() << std::endl;
+    
+    // Relinquishes ownership of p1 on the object
+    // and pointer becomes NULL
+    p1.reset();
+    std::cout << p1.get() << std::endl;
+    std::cout << p2.use_count() << std::endl;
+    std::cout << p2.get() << std::endl;
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -147,6 +171,8 @@ int main(int argc, const char * argv[]) {
     test5();
     
     // s_ptr test
+    std::cout << "=====test6=====" << std::endl;
+    test6();
     
     return 0;
 }
