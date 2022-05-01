@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB2F6400281E2DDA00EBD740 /* mySharedPointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CB2F63FF281E2DDA00EBD740 /* mySharedPointer.cpp */; };
 		CBB182E5281B845400BE0A33 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBB182E4281B845400BE0A33 /* main.cpp */; };
 		CBB182EC281B85DC00BE0A33 /* myUniquePointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CBB182EB281B85DC00BE0A33 /* myUniquePointer.cpp */; };
 /* End PBXBuildFile section */
@@ -24,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		CB2F63FF281E2DDA00EBD740 /* mySharedPointer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mySharedPointer.cpp; sourceTree = "<group>"; };
 		CBB182E1281B845400BE0A33 /* mySmartPointer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mySmartPointer; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBB182E4281B845400BE0A33 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CBB182EB281B85DC00BE0A33 /* myUniquePointer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = myUniquePointer.cpp; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 			children = (
 				CBB182E4281B845400BE0A33 /* main.cpp */,
 				CBB182EB281B85DC00BE0A33 /* myUniquePointer.cpp */,
+				CB2F63FF281E2DDA00EBD740 /* mySharedPointer.cpp */,
 			);
 			path = mySmartPointer;
 			sourceTree = "<group>";
@@ -122,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB2F6400281E2DDA00EBD740 /* mySharedPointer.cpp in Sources */,
 				CBB182EC281B85DC00BE0A33 /* myUniquePointer.cpp in Sources */,
 				CBB182E5281B845400BE0A33 /* main.cpp in Sources */,
 			);

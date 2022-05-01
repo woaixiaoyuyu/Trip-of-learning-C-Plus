@@ -130,6 +130,7 @@ void test5() {
 
 int main(int argc, const char * argv[]) {
     
+    // u_ptr test
     std::cout << "=====test1=====" << std::endl;
     test1();
     
@@ -144,6 +145,8 @@ int main(int argc, const char * argv[]) {
     
     std::cout << "=====test5=====" << std::endl;
     test5();
+    
+    // s_ptr test
     
     return 0;
 }
