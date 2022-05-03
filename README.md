@@ -70,4 +70,5 @@ A collection of some projects during learning c++.
 
 重点放在单个变量上，数组只实现了一小部分。
 
-完成unique_ptr和shared_ptr就算成功，施工ing
+完成unique_ptr和shared_ptr就算成功，把一些最最最常见的api实现就行，顺便让shared_ptr支持多线程。
+
