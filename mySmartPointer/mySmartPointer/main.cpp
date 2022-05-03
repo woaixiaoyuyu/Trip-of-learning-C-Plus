@@ -152,12 +152,14 @@ void test6() {
     std::cout << p2.get() << std::endl;
 }
 
-void thr(const s_ptr<A>& p) {
+void thr(s_ptr<A> p) {
+    std::cout << p.use_count() << std::endl;
     s_ptr<A> q(p);
     std::cout << q.use_count() << std::endl;
 }
 
-void thr2(const s_ptr<A>& p) {
+void thr2(s_ptr<A> p) {
+    std::cout << p.use_count() << std::endl;
     s_ptr<A> q(p);
     std::cout << q.use_count() << std::endl;
 }
@@ -165,6 +167,9 @@ void thr2(const s_ptr<A>& p) {
 // 测一下s_ptr<T> 的多线程
 void test7() {
     s_ptr<A> p = make_sptr<A>();
+    std::cout << p.use_count() << std::endl;
+    // 每构造一个 thread，都需要把 p 复制到 thread 内部
+    // 构造 std::thread 的时候，线程会先用你提供的参数构造线程内的对象，然后该对象被移动给线程函数的实参
     std::thread t1(thr, p);
     std::thread t2(thr2, p);
     t1.join();

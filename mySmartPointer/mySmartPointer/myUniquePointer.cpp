@@ -40,14 +40,14 @@ public:
     u_ptr& operator=(const u_ptr& p) = delete;
     
     u_ptr(u_ptr&& p) {
-        if (ptr != nullptr) {
-            deleter(ptr);
-        }
         ptr = p.ptr;
         p.ptr = nullptr;
     }
     
     u_ptr& operator=(u_ptr&& p) {
+        if (ptr != nullptr) {
+            deleter(ptr);
+        }
         ptr = p.ptr;
         p.ptr = nullptr;
     }
@@ -97,15 +97,14 @@ public:
     u_ptr& operator=(const u_ptr& p) = delete;
     
     u_ptr(u_ptr&& p) {
-        if (ptr != nullptr) {
-            delete[] ptr;
-        }
         ptr = p.ptr;
         p.ptr = nullptr;
     }
     
     u_ptr& operator=(u_ptr&& p) {
-        
+        if (ptr != nullptr) {
+            delete[] ptr;
+        }
         ptr = p.ptr;
         p.ptr = nullptr;
     }

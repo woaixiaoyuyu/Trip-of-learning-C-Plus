@@ -36,6 +36,12 @@ public:
         block = new c_block<T, Deleter>(deleter);
     }
     ~s_ptr() {
+        if (!block) {
+            // 如果控制块已销毁
+            return;
+        }
+        std::lock_guard<std::mutex> locker(*s_lock);
+        block->cnt -= 1;
         draw_back();
     }
     void draw_back() {
@@ -75,7 +81,7 @@ public:
         block->cnt = 1;
         s_lock = ptr->s_lock;
     }
-    int use_count() {
+    int use_count() const{
         return block->cnt;
     }
     s_ptr(const s_ptr& p) {
@@ -134,6 +140,11 @@ public:
         block = new c_block<T, Deleter>(deleter);
     }
     ~s_ptr() {
+        if (!block) {
+            // 如果控制块已销毁
+            return;
+        }
+        block->cnt -= 1;
         draw_back();
     }
     void draw_back() {
@@ -174,7 +185,7 @@ public:
         this->ptr = ptr;
         block->cnt = 1;
     }
-    int use_count() {
+    int use_count() const {
         return block->cnt;
     }
     s_ptr(const s_ptr& p) {
