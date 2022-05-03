@@ -7,9 +7,10 @@
 //
 
 #include <iostream>
+#include <string>
+#include <thread>
 #include "myUniquePointer.cpp"
 #include "mySharedPointer.cpp"
-#include <string>
 
 class A {
 public:
@@ -151,6 +152,26 @@ void test6() {
     std::cout << p2.get() << std::endl;
 }
 
+void thr(const s_ptr<A>& p) {
+    s_ptr<A> q(p);
+    std::cout << q.use_count() << std::endl;
+}
+
+void thr2(const s_ptr<A>& p) {
+    s_ptr<A> q(p);
+    std::cout << q.use_count() << std::endl;
+}
+
+// 测一下s_ptr<T> 的多线程
+void test7() {
+    s_ptr<A> p = make_sptr<A>();
+    std::thread t1(thr, p);
+    std::thread t2(thr2, p);
+    t1.join();
+    t2.join();
+    std::cout << p.use_count() << std::endl;
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -173,6 +194,9 @@ int main(int argc, const char * argv[]) {
     // s_ptr test
     std::cout << "=====test6=====" << std::endl;
     test6();
+    
+    std::cout << "=====test7=====" << std::endl;
+    test7();
     
     return 0;
 }

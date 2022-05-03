@@ -44,7 +44,7 @@ public:
         p.ptr = nullptr;
     }
     
-    u_ptr& operator=(const u_ptr&& p) {
+    u_ptr& operator=(u_ptr&& p) {
         ptr = p.ptr;
         p.ptr = nullptr;
     }
@@ -98,7 +98,7 @@ public:
         p.ptr = nullptr;
     }
     
-    u_ptr& operator=(const u_ptr&& p) {
+    u_ptr& operator=(u_ptr&& p) {
         ptr = p.ptr;
         p.ptr = nullptr;
     }

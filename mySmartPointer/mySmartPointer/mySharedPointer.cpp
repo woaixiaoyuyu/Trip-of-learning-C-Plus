@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <functional>
+#include <mutex>
 
 template <typename T, class Deleter = std::default_delete<T>>
 struct c_block {
@@ -21,6 +22,7 @@ struct c_block {
 template <typename T, class Deleter = std::default_delete<T>>
 class s_ptr {
 public:
+    std::mutex* s_lock = new std::mutex();
     T* ptr = nullptr;
     c_block<T, Deleter>* block = nullptr;  // 控制块
 public:
@@ -40,6 +42,8 @@ public:
         if (block->cnt == 0) {
             block->deleter(ptr);
             block = nullptr;
+            delete s_lock;
+            s_lock = nullptr;
         }
     }
     T& operator*() {
@@ -52,6 +56,7 @@ public:
         return operator->();
     }
     void reset() {
+        std::lock_guard<std::mutex> locker(*s_lock);
         block->cnt -= 1;
         draw_back();
         ptr = nullptr;
@@ -60,6 +65,7 @@ public:
     // Y 必须是完整类型且可隐式转换为 T
     template <typename Y>
     void reset(Y* ptr) {
+        std::lock_guard<std::mutex> locker(*s_lock);
         if (!std::is_convertible<Y*, T*>::value) {
             throw std::logic_error("can't convert those type.\n");
         }
@@ -67,37 +73,48 @@ public:
         draw_back();
         this->ptr = ptr;
         block->cnt = 1;
+        s_lock = ptr->s_lock;
     }
     int use_count() {
         return block->cnt;
     }
     s_ptr(const s_ptr& p) {
+        std::lock_guard<std::mutex> locker(*s_lock);
         ptr = p.ptr;
         block = p.block;
         block->cnt += 1;
+        s_lock = p.s_lock;
     }
     s_ptr& operator=(const s_ptr& p) {
+        std::lock_guard<std::mutex> locker(*s_lock);
         ptr = p.ptr;
         block = p.block;
         block->cnt += 1;
+        s_lock = p.s_lock;
     }
-    s_ptr(const s_ptr&& p) {
+    s_ptr(s_ptr&& p) {
+        std::lock_guard<std::mutex> locker(*s_lock);
         block->cnt -= 1;
         draw_back();
         ptr = p.ptr;
         block = p.block;
+        s_lock = p.s_lock;
         
         p.ptr = nullptr;
         p.block = nullptr;
+        p.s_lock = nullptr;
     }
-    s_ptr& operator=(const s_ptr&& p) {
+    s_ptr& operator=(s_ptr&& p) {
+        std::lock_guard<std::mutex> locker(*s_lock);
         block->cnt -= 1;
         draw_back();
         ptr = p.ptr;
         block = p.block;
+        s_lock = p.s_lock;
         
         p.ptr = nullptr;
         p.block = nullptr;
+        p.s_lock = nullptr;
     }
     
 };
@@ -172,7 +189,7 @@ public:
         block = p.block;
         block->cnt += 1;
     }
-    s_ptr(const s_ptr&& p) {
+    s_ptr(s_ptr&& p) {
         block->cnt -= 1;
         draw_back();
         ptr = p.ptr;
@@ -181,7 +198,7 @@ public:
         p.ptr = nullptr;
         p.block = nullptr;
     }
-    s_ptr& operator=(const s_ptr&& p) {
+    s_ptr& operator=(s_ptr&& p) {
         block->cnt -= 1;
         draw_back();
         ptr = p.ptr;
