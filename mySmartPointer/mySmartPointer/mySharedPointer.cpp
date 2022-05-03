@@ -94,8 +94,6 @@ public:
     }
     s_ptr(s_ptr&& p) {
         std::lock_guard<std::mutex> locker(*s_lock);
-        block->cnt -= 1;
-        draw_back();
         ptr = p.ptr;
         block = p.block;
         s_lock = p.s_lock;
@@ -190,8 +188,6 @@ public:
         block->cnt += 1;
     }
     s_ptr(s_ptr&& p) {
-        block->cnt -= 1;
-        draw_back();
         ptr = p.ptr;
         block = p.block;
         
