@@ -76,4 +76,4 @@ A collection of some projects during learning c++.
 
 在阅读了《深入探索C++对象模型》之后，自己也想做个小实验，看看书上说的对不对，温故而知新嘛，还是要自己尝试一下的，顺便还可以学一下gdb的基本操作，一举两得。
 
-自己打算做一个配套讲解的简单视频，施工ing。
+代码解读视频：https://www.bilibili.com/video/BV1jB4y197eb?spm_id_from=333.999.0.0
