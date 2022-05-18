@@ -72,3 +72,8 @@ A collection of some projects during learning c++.
 
 完成unique_ptr和shared_ptr就算成功，把一些最最最常见的api实现就行，顺便让shared_ptr支持多线程。
 
+## myTestForObjectModel
+
+在阅读了《深入探索C++对象模型》之后，自己也想做个小实验，看看书上说的对不对，温故而知新嘛，还是要自己尝试一下的，顺便还可以学一下gdb的基本操作，一举两得。
+
+自己打算做一个配套讲解的简单视频，施工ing。
