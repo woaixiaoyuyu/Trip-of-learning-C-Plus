@@ -1,0 +1,3 @@
+/Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/cmake-build-debug/CMakeFiles/myConcurrency.dir
+/Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/cmake-build-debug/CMakeFiles/rebuild_cache.dir

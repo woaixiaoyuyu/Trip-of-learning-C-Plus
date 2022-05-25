@@ -77,3 +77,11 @@ A collection of some projects during learning c++.
 在阅读了《深入探索C++对象模型》之后，自己也想做个小实验，看看书上说的对不对，温故而知新嘛，还是要自己尝试一下的，顺便还可以学一下gdb的基本操作，一举两得。
 
 代码解读视频：https://www.bilibili.com/video/BV1jB4y197eb?spm_id_from=333.999.0.0
+
+## myConcurrency
+
+关于《C++ Concurrency in Action》的学习，仓库里是一些自己实践的代码案例：
+
+- 自己实现的std::accumulate，施工ing
+
+辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
