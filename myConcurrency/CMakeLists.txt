@@ -3,4 +3,4 @@ project(myConcurrency)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(myConcurrency main.cpp)
+add_executable(myConcurrency main.cpp my_accumulate.hpp)

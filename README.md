@@ -82,6 +82,7 @@ A collection of some projects during learning c++.
 
 关于《C++ Concurrency in Action》的学习，仓库里是一些自己实践的代码案例：
 
-- 自己实现的std::accumulate，施工ing
+- 实现std::accumulate的并行版
+- 施工ing
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
