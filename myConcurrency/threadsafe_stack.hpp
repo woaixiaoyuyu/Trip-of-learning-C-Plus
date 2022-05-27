@@ -39,7 +39,7 @@ public:
     void pop(T& value) {
         // 把弹出的值赋值给value
         std::lock_guard<std::mutex> lock(m);
-        if (!empty()) {
+        if (!s.empty()) {
             T temp = s.top();
             value = temp;
             s.pop();
@@ -51,7 +51,7 @@ public:
         // 对于大规模的元素而言，直接返回副本会有大量的空间开销，所以返回指针
         // 并且智能指针能帮助管理内存
         std::lock_guard<std::mutex> lock(m);
-        if (!empty()) {
+        if (!s.empty()) {
             std::shared_ptr<T> p = std::make_shared<T>(s.top());
             s.pop();
             return p;
