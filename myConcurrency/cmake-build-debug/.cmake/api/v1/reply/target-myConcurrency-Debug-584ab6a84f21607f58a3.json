@@ -92,7 +92,8 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -107,6 +108,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "my_accumulate.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "threadsafe_stack.hpp",
 			"sourceGroupIndex" : 1
 		}
 	],
