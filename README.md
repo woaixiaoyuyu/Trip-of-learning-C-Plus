@@ -84,6 +84,7 @@ A collection of some projects during learning c++.
 
 - 实现std::accumulate的并行版
 - 线程安全的堆栈类
-- 简单的层级互斥量实现（施工ing）
+- 简单的层级互斥量实现
+- 
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/

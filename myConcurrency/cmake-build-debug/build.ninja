@@ -55,6 +55,12 @@ build CMakeFiles/myConcurrency.dir/main.cpp.o: CXX_COMPILER__myConcurrency_Debug
   OBJECT_DIR = CMakeFiles/myConcurrency.dir
   OBJECT_FILE_DIR = CMakeFiles/myConcurrency.dir
 
+build CMakeFiles/myConcurrency.dir/hierarchical_mutex.cpp.o: CXX_COMPILER__myConcurrency_Debug /Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/hierarchical_mutex.cpp || cmake_object_order_depends_target_myConcurrency
+  DEP_FILE = CMakeFiles/myConcurrency.dir/hierarchical_mutex.cpp.o.d
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -std=gnu++14
+  OBJECT_DIR = CMakeFiles/myConcurrency.dir
+  OBJECT_FILE_DIR = CMakeFiles/myConcurrency.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target myConcurrency
@@ -63,7 +69,7 @@ build CMakeFiles/myConcurrency.dir/main.cpp.o: CXX_COMPILER__myConcurrency_Debug
 #############################################
 # Link the executable myConcurrency
 
-build myConcurrency: CXX_EXECUTABLE_LINKER__myConcurrency_Debug CMakeFiles/myConcurrency.dir/main.cpp.o
+build myConcurrency: CXX_EXECUTABLE_LINKER__myConcurrency_Debug CMakeFiles/myConcurrency.dir/main.cpp.o CMakeFiles/myConcurrency.dir/hierarchical_mutex.cpp.o
   FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk
   OBJECT_DIR = CMakeFiles/myConcurrency.dir
   POST_BUILD = :

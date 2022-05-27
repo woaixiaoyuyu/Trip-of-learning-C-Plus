@@ -2,6 +2,7 @@
 #include <thread>
 #include "my_accumulate.hpp"
 #include "threadsafe_stack.hpp"
+#include "hierarchical_mutex.h"
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -29,6 +30,38 @@ void test_threadsafe_stack() {
     q.join();
 }
 
+hierarchical_mutex high_mutex(1000), mid_mutex(500), low_mutex(100);
+
+void work() {
+    std::cout << "good job." << std::endl;
+}
+
+void low_func() {
+    std::lock_guard<hierarchical_mutex> p(low_mutex);
+    work();
+}
+
+void mid_func() {
+    std::lock_guard<hierarchical_mutex> p(mid_mutex);
+    low_func();
+}
+
+void high_func() {
+    std::lock_guard<hierarchical_mutex> p(high_mutex);
+    mid_func();
+}
+
+void other_func() {
+    hierarchical_mutex o_mutex(10);
+    std::lock_guard<hierarchical_mutex> o(o_mutex);
+    low_func();
+}
+
+void test_hierarchical_mutex() {
+    high_func();
+    // other_func(); // std::logic_error: this hierarchy is invalid.
+}
+
 int main() {
     /*
      * 多个单线程/进程间的通信(包含启动)要比单一进程中的多线程间的通信(包括启动)的开销大，
@@ -37,6 +70,7 @@ int main() {
      * 因此，本书只关注使用多线程的并发，并且在此之后所提到“并发”，均假设为多线程来实现。*/
 
     // test_my_parallel_accumulate();
-    test_threadsafe_stack();
+    // test_threadsafe_stack();
+    test_hierarchical_mutex();
     return 0;
 }
