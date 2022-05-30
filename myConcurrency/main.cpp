@@ -99,8 +99,8 @@ void test_packaged_and_async() {
     q(2,3);
     std::cout << result2.get() << std::endl;
 
-    /*std::future<int> result3 = my_async<int, int, int>(static_cast<std::function<int(int,int)>>(sum_and_out), 10, 11);
-    std::cout << result3.get() << std::endl;*/
+    std::future<int> result3 = my_async<int, int, int>(static_cast<std::function<int(int,int)>>(sum_and_out), 10, 11);
+    std::cout << result3.get() << std::endl;
 }
 
 std::condition_variable cv;

@@ -25,8 +25,8 @@ public:
     my_packaged(const my_packaged&) = delete;   // 拷贝构造
     my_packaged& operator=(const my_packaged&) = delete;    // operator=左值
 
-    my_packaged(const my_packaged&& other) : p(std::move(other.p)), f(std::move(other.f)) {}    // 移动构造
-    my_packaged& operator=(const my_packaged&& other) {   // operator=右值
+    my_packaged(my_packaged&& other) : p(std::move(other.p)), f(std::move(other.f)) {}    // 移动构造
+    my_packaged& operator=(my_packaged&& other) {   // operator=右值
         p = std::move(other.p);
         f = std::move(other.f);
         return *this;
@@ -59,8 +59,8 @@ public:
     my_packaged(const my_packaged&) = delete;   // 拷贝构造
     my_packaged& operator=(const my_packaged&) = delete;    // operator=左值
 
-    my_packaged(const my_packaged&& other) : p(std::move(other.p)), f(std::move(other.f)) {}    // 移动构造
-    my_packaged& operator=(const my_packaged&& other) {   // operator=右值
+    my_packaged(my_packaged&& other) : p(std::move(other.p)), f(std::move(other.f)) {}    // 移动构造
+    my_packaged& operator=(my_packaged&& other) {   // operator=右值
         p = std::move(other.p);
         f = std::move(other.f);
         return *this;
