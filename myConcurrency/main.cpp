@@ -92,6 +92,14 @@ void test_packaged_and_async() {
     std::future<int> result = p.get_future();
     p(3,4);
     std::cout << result.get() << std::endl;
+
+    my_packaged<int(int, int)> q(sum_and_out);
+    std::future<int> result2 = q.get_future();
+    q(2,3);
+    std::cout << result2.get() << std::endl;
+
+    std::future<int> result3 = my_async<int, int, int>(static_cast<std::function<int(int,int)>>(sum_and_out), 10, 11);
+    std::cout << result3.get() << std::endl;
 }
 
 int main() {
