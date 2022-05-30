@@ -82,11 +82,11 @@ A collection of some projects during learning c++.
 
 关于《C++ Concurrency in Action》的学习，仓库里是一些自己实践的代码案例：
 
-- 实现std::accumulate的并行版（my_accumulate）
-- 线程安全的堆栈类（threadsafe_stack）
-- 简单的层级互斥量实现（hierarchical_mutex）
-- 线程安全队列的接口，简单使用一下`std::condition_variable`
-- 尝试使用promises自定义packaged_task和async
-- 条件变量+超时判断
+- 实现std::accumulate的并行版（my_accumulate.hpp）
+- 线程安全的堆栈类（threadsafe_stack.hpp）
+- 简单的层级互斥量实现（hierarchical_mutex.h）
+- 线程安全队列的接口，简单使用一下`std::condition_variable`（tlreadsafe_queue.hpp）
+- 尝试使用promises自定义packaged_task和async（my_async.hpp）
+- 条件变量+超时判断（main.cpp）
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
