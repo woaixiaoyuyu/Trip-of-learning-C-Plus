@@ -85,7 +85,7 @@ A collection of some projects during learning c++.
 - 实现std::accumulate的并行版（my_accumulate）
 - 线程安全的堆栈类（threadsafe_stack）
 - 简单的层级互斥量实现（hierarchical_mutex）
-- 线程安全队列的接口，简单使用一下`std::condition_variable`（施工ing）
+- 线程安全队列的接口，简单使用一下`std::condition_variable`
 - 尝试使用promises自定义packaged_task和async（施工ing）
 - 条件变量+超时（施工ing）
 

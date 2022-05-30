@@ -96,7 +96,9 @@
 			[
 				1,
 				2,
-				4
+				4,
+				5,
+				6
 			]
 		}
 	],
@@ -127,6 +129,16 @@
 		{
 			"backtrace" : 1,
 			"path" : "hierarchical_mutex.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "threadsafe_queue.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "my_async.hpp",
 			"sourceGroupIndex" : 1
 		}
 	],

@@ -3,6 +3,8 @@
 #include "my_accumulate.hpp"
 #include "threadsafe_stack.hpp"
 #include "hierarchical_mutex.h"
+#include "threadsafe_queue.hpp"
+#include "my_async.hpp"
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -62,6 +64,36 @@ void test_hierarchical_mutex() {
     // other_func(); // std::logic_error: this hierarchy is invalid.
 }
 
+void push_queue(threadsafe_queue<int>& p, int elem) {
+    p.push(elem);
+}
+
+void pop_queue(threadsafe_queue<int>& p) {
+    std::shared_ptr<int> x = p.wait_and_pop();
+    std::cout << x.get() << std::endl;
+    std::cout << *x << std::endl;
+}
+
+void test_threadsafe_queue() {
+    threadsafe_queue<int> p;
+    std::thread a(pop_queue, std::ref(p));
+    std::thread b(push_queue, std::ref(p), 3);
+    a.join();
+    b.join();
+}
+
+int sum_and_out(int x, int y) {
+    return x + y;
+}
+
+void test_packaged_and_async() {
+    // std::packaged_task<void(int, int)> q(sum_and_out);
+    my_packaged<int, int, int> p(sum_and_out);
+    std::future<int> result = p.get_future();
+    p(3,4);
+    std::cout << result.get() << std::endl;
+}
+
 int main() {
     /*
      * 多个单线程/进程间的通信(包含启动)要比单一进程中的多线程间的通信(包括启动)的开销大，
@@ -71,6 +103,8 @@ int main() {
 
     // test_my_parallel_accumulate();
     // test_threadsafe_stack();
-    test_hierarchical_mutex();
+    // test_hierarchical_mutex();
+    // test_threadsafe_queue();
+    test_packaged_and_async();
     return 0;
 }
