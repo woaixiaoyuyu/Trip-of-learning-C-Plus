@@ -87,6 +87,6 @@ A collection of some projects during learning c++.
 - 简单的层级互斥量实现（hierarchical_mutex）
 - 线程安全队列的接口，简单使用一下`std::condition_variable`
 - 尝试使用promises自定义packaged_task和async（施工ing）
-- 条件变量+超时（施工ing）
+- 条件变量+超时判断
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/

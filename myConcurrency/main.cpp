@@ -5,6 +5,7 @@
 #include "hierarchical_mutex.h"
 #include "threadsafe_queue.hpp"
 #include "my_async.hpp"
+#include <chrono>
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -93,13 +94,27 @@ void test_packaged_and_async() {
     p(3,4);
     std::cout << result.get() << std::endl;
 
-    my_packaged<int(int, int)> q(sum_and_out);
+    my_packaged<int(int, int)> q(sum_and_out);  // 测试特化版
     std::future<int> result2 = q.get_future();
     q(2,3);
     std::cout << result2.get() << std::endl;
 
-    std::future<int> result3 = my_async<int, int, int>(static_cast<std::function<int(int,int)>>(sum_and_out), 10, 11);
-    std::cout << result3.get() << std::endl;
+    /*std::future<int> result3 = my_async<int, int, int>(static_cast<std::function<int(int,int)>>(sum_and_out), 10, 11);
+    std::cout << result3.get() << std::endl;*/
+}
+
+std::condition_variable cv;
+std::mutex m;
+
+bool wait_loop() {
+    auto timeout = std::chrono::steady_clock::now() + std::chrono::microseconds(200);
+    std::unique_lock<std::mutex> lock(m);   // 这里也不可以lock_guard，因为要自动释放再加锁
+    while (1) {
+        if (cv.wait_until(lock, timeout) == std::cv_status::timeout) {
+            break;
+        }
+    }
+    return true;
 }
 
 int main() {
@@ -114,5 +129,6 @@ int main() {
     // test_hierarchical_mutex();
     // test_threadsafe_queue();
     test_packaged_and_async();
+    wait_loop();
     return 0;
 }
