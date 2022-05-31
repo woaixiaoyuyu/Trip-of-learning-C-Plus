@@ -98,7 +98,8 @@
 				2,
 				4,
 				5,
-				6
+				6,
+				7
 			]
 		}
 	],
@@ -139,6 +140,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "my_async.hpp",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "quick_sort.hpp",
 			"sourceGroupIndex" : 1
 		}
 	],

@@ -6,6 +6,7 @@
 #include "threadsafe_queue.hpp"
 #include "my_async.hpp"
 #include <chrono>
+#include "quick_sort.hpp"
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -117,6 +118,22 @@ bool wait_loop() {
     return true;
 }
 
+void print(int x) {
+    std::cout << x << std::endl;
+}
+
+void test_quick_sort() {
+    std::list<int> lst {1, 10, 20, 11, 6, 8, 4, 1, 3};
+    auto result = quick_sort(lst);
+    std::for_each(result.begin(), result.end(), print);
+}
+
+void test_parallel_quick_sort() {
+    std::list<int> lst {1, 10, 20, 11, 6, 8, 4, 1, 3};
+    auto result = parallel_quick_sort(lst);
+    std::for_each(result.begin(), result.end(), print);
+}
+
 int main() {
     /*
      * 多个单线程/进程间的通信(包含启动)要比单一进程中的多线程间的通信(包括启动)的开销大，
@@ -128,7 +145,9 @@ int main() {
     // test_threadsafe_stack();
     // test_hierarchical_mutex();
     // test_threadsafe_queue();
-    test_packaged_and_async();
-    wait_loop();
+    // test_packaged_and_async();
+    // wait_loop();
+    // test_quick_sort();
+    test_parallel_quick_sort();
     return 0;
 }

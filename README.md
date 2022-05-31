@@ -88,5 +88,6 @@ A collection of some projects during learning c++.
 - 线程安全队列的接口，简单使用一下`std::condition_variable`（tlreadsafe_queue.hpp）
 - 尝试使用promises自定义packaged_task和async（my_async.hpp）
 - 条件变量+超时判断（main.cpp）
+- 快排/并发快排（quick_sort.hpp）
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
