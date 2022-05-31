@@ -54,8 +54,8 @@ std::list<T> parallel_quick_sort(const std::list<T>& input) {
     });
     std::list<T> lower(temp.begin(), divide_point);
     std::list<T> higher(divide_point, temp.end());
-    std::future<std::list<T>> low = std::async(parallel_quick_sort, std::ref(lower));
-    std::future<std::list<T>> high = std::async(parallel_quick_sort, std::ref(higher));
+    std::future<std::list<T>> low = std::async(parallel_quick_sort<T>, std::ref(lower));
+    std::future<std::list<T>> high = std::async(parallel_quick_sort<T>, std::ref(higher));
     result.splice(result.begin(), low.get());
     result.splice(result.end(), high.get());
     return result;
