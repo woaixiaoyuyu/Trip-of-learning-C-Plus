@@ -8,6 +8,9 @@
 #include <chrono>
 #include "quick_sort.hpp"
 #include "threadsafe_map.hpp"
+#include <string>
+#include <functional>
+#include <future>
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -136,7 +139,15 @@ void test_parallel_quick_sort() {
 }
 
 void test_threadsafe_map() {
-
+    threadsafe_map<int, std::string, std::hash<int>> mp;
+    std::thread x(&threadsafe_map<int, std::string, std::hash<int>>::add_and_update, &mp, 3, "hello");
+    std::thread y(&threadsafe_map<int, std::string, std::hash<int>>::add_and_update, &mp, 5, "world");
+    std::future<std::string> p = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5);
+    std::future<std::string> q = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5);
+    x.join();
+    y.join();
+    std::cout << p.get() << std::endl;
+    std::cout << q.get() << std::endl;
 }
 
 int main() {

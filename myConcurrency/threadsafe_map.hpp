@@ -21,9 +21,9 @@ private:
         using bucket_iter = typename bucket_lst::iterator;
 
         bucket_lst lst;
-        std::shared_mutex m;
+        mutable std::shared_mutex m;
     private:
-        bucket_iter& get_from_key(const Key& key) {
+        bucket_iter get_from_key(const Key& key) {
             bucket_iter res = std::find_if(lst.begin(), lst.end(), [&](const bucket_elem& elem) -> bool {
                 return elem.first == key;
             });
@@ -49,7 +49,7 @@ private:
             if (temp != lst.end()) {
                  temp->second = value;
             } else {
-                lst.push_back(key, value);
+                lst.push_back(bucket_elem(key, value));
             }
         }
 
@@ -87,7 +87,7 @@ public:
         }
     }
 
-    Value get_value(const Key& key, const Value& default_value = Value()) const {
+    Value get_value(const Key& key, const Value& default_value = Value()) {
         return get_bucket(key).get_value(key, default_value);
     }
 
