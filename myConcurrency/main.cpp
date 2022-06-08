@@ -7,6 +7,7 @@
 #include "my_async.hpp"
 #include <chrono>
 #include "quick_sort.hpp"
+#include "threadsafe_map.hpp"
 
 void test_my_parallel_accumulate() {
     std::vector<int> v(48, 1);
@@ -134,6 +135,10 @@ void test_parallel_quick_sort() {
     std::for_each(result.begin(), result.end(), print);
 }
 
+void test_threadsafe_map() {
+
+}
+
 int main() {
     /*
      * 多个单线程/进程间的通信(包含启动)要比单一进程中的多线程间的通信(包括启动)的开销大，
@@ -148,6 +153,7 @@ int main() {
     // test_packaged_and_async();
     // wait_loop();
     // test_quick_sort();
-    test_parallel_quick_sort();
+    // test_parallel_quick_sort();
+    test_threadsafe_map();
     return 0;
 }

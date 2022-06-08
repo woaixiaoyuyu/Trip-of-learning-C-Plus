@@ -51,13 +51,13 @@ build cmake_object_order_depends_target_myConcurrency: phony || CMakeFiles/myCon
 
 build CMakeFiles/myConcurrency.dir/main.cpp.o: CXX_COMPILER__myConcurrency_Debug /Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/main.cpp || cmake_object_order_depends_target_myConcurrency
   DEP_FILE = CMakeFiles/myConcurrency.dir/main.cpp.o.d
-  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -std=gnu++14
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -std=gnu++17
   OBJECT_DIR = CMakeFiles/myConcurrency.dir
   OBJECT_FILE_DIR = CMakeFiles/myConcurrency.dir
 
 build CMakeFiles/myConcurrency.dir/hierarchical_mutex.cpp.o: CXX_COMPILER__myConcurrency_Debug /Users/louwen/Desktop/2012/code/Trip-of-learning-C-Plus/myConcurrency/hierarchical_mutex.cpp || cmake_object_order_depends_target_myConcurrency
   DEP_FILE = CMakeFiles/myConcurrency.dir/hierarchical_mutex.cpp.o.d
-  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -std=gnu++14
+  FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk -std=gnu++17
   OBJECT_DIR = CMakeFiles/myConcurrency.dir
   OBJECT_FILE_DIR = CMakeFiles/myConcurrency.dir
 
