@@ -142,10 +142,10 @@ void test_threadsafe_map() {
     threadsafe_map<int, std::string, std::hash<int>> mp;
     std::thread x(&threadsafe_map<int, std::string, std::hash<int>>::add_and_update, &mp, 3, "hello");
     std::thread y(&threadsafe_map<int, std::string, std::hash<int>>::add_and_update, &mp, 5, "world");
-    std::future<std::string> p = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5);
-    std::future<std::string> q = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5);
     x.join();
     y.join();
+    std::future<std::string> p = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5, "null");
+    std::future<std::string> q = std::async(&threadsafe_map<int, std::string, std::hash<int>>::get_value, &mp, 5, "null");
     std::cout << p.get() << std::endl;
     std::cout << q.get() << std::endl;
 }

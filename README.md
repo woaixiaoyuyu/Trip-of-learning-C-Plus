@@ -89,6 +89,6 @@ A collection of some projects during learning c++.
 - 尝试使用promises自定义packaged_task和async（my_async.hpp）
 - 条件变量+超时判断（main.cpp）
 - 快排/并发快排（quick_sort.hpp）
-- 实现线程安全map（tlreadsafe_map.hpp）施工ing
+- 实现线程安全map（threadsafe_map.hpp）
 
 辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
