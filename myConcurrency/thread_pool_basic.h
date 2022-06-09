@@ -117,9 +117,9 @@ public:
 };
 
 /*
- * 一个最中级版本的线程池，能执行各种类型函数
+ * 一个中级版本的线程池，能执行各种类型函数
  * 只能执行固定数量的任务，使用后的线程不可以循环利用
- * 利用async/future/packaged_task接收线程的返回值
+ * 利用future/packaged_task接收线程的返回值
  * 用packaged_task封装需要执行的任务
  * 因为std::function需要存储可复制构造的函数对象，而packaged_task是需要移动，所以要自己写一个对函数的封装
  * */
