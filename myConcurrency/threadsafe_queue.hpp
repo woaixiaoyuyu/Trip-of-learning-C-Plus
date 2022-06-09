@@ -55,7 +55,7 @@ public:
         condition.wait(lock, [this]() -> bool {
             return !q.empty();
         });
-        value = q.front();
+        value = std::move(q.front());
         q.pop();
     }
     std::shared_ptr<T> wait_and_pop() {
@@ -63,7 +63,7 @@ public:
         condition.wait(lock, [this]() -> bool {
             return !q.empty();
         });
-        std::shared_ptr<T> res = std::make_shared<T>(q.front());
+        std::shared_ptr<T> res = std::make_shared<T>(std::move(q.front()));
         q.pop();
         return res;
     }
@@ -73,7 +73,7 @@ public:
         std::lock_guard<std::mutex> lock(m);
         if(q.empty())
             return false;
-        value = q.front();
+        value=std::move(q.front());
         q.pop();
         return true;
     }
@@ -83,7 +83,7 @@ public:
         std::lock_guard<std::mutex> lock(m);
         if(q.empty())
             return std::shared_ptr<T>();
-        std::shared_ptr<T> res(std::make_shared<T>(q.front()));
+        std::shared_ptr<T> res(std::make_shared<T>(std::move(q.front())));
         q.pop();
         return res;
     }
