@@ -67,6 +67,26 @@ public:
         q.pop();
         return res;
     }
+
+    bool try_pop(T& value)
+    {
+        std::lock_guard<std::mutex> lock(m);
+        if(q.empty())
+            return false;
+        value = q.front();
+        q.pop();
+        return true;
+    }
+
+    std::shared_ptr<T> try_pop()
+    {
+        std::lock_guard<std::mutex> lock(m);
+        if(q.empty())
+            return std::shared_ptr<T>();
+        std::shared_ptr<T> res(std::make_shared<T>(q.front()));
+        q.pop();
+        return res;
+    }
 };
 
 
