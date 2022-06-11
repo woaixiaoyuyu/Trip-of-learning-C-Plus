@@ -91,7 +91,9 @@ A collection of some projects during learning c++.
 - 快排/并发快排（quick_sort.hpp）
 - 实现线程安全map（threadsafe_map.hpp）
 - 线程池基础版（thread_pool_basic.h）
-- 线程池中级版（thread_pool_basic.h）
-- 线程池高级版（施工ing）
+- 线程池高级版（thread_pool_basic.h）
 
-辅助学习资料：http://shouce.jb51.net/cpp_concurrency_in_action/
+辅助学习资料：
+
+- http://shouce.jb51.net/cpp_concurrency_in_action/
+- https://github.com/progschj/ThreadPool

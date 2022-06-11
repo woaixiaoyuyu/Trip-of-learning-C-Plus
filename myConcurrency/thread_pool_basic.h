@@ -33,7 +33,7 @@ public:
 
 /*
  * 一个最基础的线程池，只能执行void()类型函数
- * 而且只能执行固定数量的任务，使用后的线程不可以循环利用
+ * 只能执行固定数量的任务，使用后的线程不可以循环利用，固定数量多少自己决定
  * 另一个缺陷非常明显，使用thread，无法接受线程执行的返回值
  * */
 class thread_pool_basic {
@@ -118,12 +118,12 @@ public:
 
 /*
  * 一个中级版本的线程池，能执行各种类型函数
- * 只能执行固定数量的任务，使用后的线程不可以循环利用
+ * 只能执行固定数量的任务，使用后的线程不可以循环利用，固定数量多少自己决定
  * 利用future/packaged_task接收线程的返回值
  * 用packaged_task封装需要执行的任务
  * 因为std::function需要存储可复制构造的函数对象，而packaged_task是需要移动，所以要自己写一个对函数的封装
  * */
-class thread_pool_mid {
+class thread_pool_final {
 private:
     std::atomic_bool done;  // 作为判断异常的标志
     threadsafe_queue<function_wrapper> queue;  // 存放执行的任务
@@ -137,16 +137,16 @@ public:
             if(queue.try_pop(task)) {
                 task();
             } else {
-                std::this_thread::yield();  // 等待执行，让线程先休息
+                std::this_thread::yield();  // 等待执行，让线程先休息。提供提示给实现，以重调度线程的执行，允许其他线程运行。
             }
         }
     }
 
-    thread_pool_mid() : done(false), join(threads) {
+    thread_pool_final() : done(false), join(threads) {
         size_t threads_count = std::thread::hardware_concurrency();
         try {
             for (int i = 0; i < threads_count; i++) {
-                threads.emplace_back(std::thread(&thread_pool_mid::worker_thread, this));
+                threads.emplace_back(std::thread(&thread_pool_final::worker_thread, this));
             }
         } catch(...) {
             done = true;
@@ -163,4 +163,5 @@ public:
         return res;
     }
 };
+
 #endif //MYCONCURRENCY_THREAD_POOL_BASIC_H
